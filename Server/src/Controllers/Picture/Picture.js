@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 
 
 const getPicture=(req,res,next)=>{
-    client.query(`Select * from picture`, (err, result)=>{
+    client.query(`Select * from products`, (err, result)=>{
         if(!err){
             res.send(result.rows);
         }
@@ -22,16 +22,12 @@ const getPicture=(req,res,next)=>{
 
 const createpicture=(req, res) => {
     try {
-        const user=req.body;
-        // res.json({
-        //     success: 1,
-        //     profile_url: `http://localhost:5000/profile/${req.file.filename}`
-        // })
-       let insertQuery = `insert into picture(id,name, picture) values(${user.id},'${user.name}','http://localhost:5000/profile/${req.file.filename}')`
-       console.log(insertQuery);
+    const user=req.body;
+       let insertQuery = `insert into products(heading,discount,price,stock,image,colour,size,input,rating,category) values('${user.heading}',${user.discount},${user.price},'${user.stock}','{${user.image}}','{${user.colour}}','{${user.size}}','{${user.input}}',${user.rating},'${user.category}')`
+    //    console.log(insertQuery);
        client.query(insertQuery, (err, result)=>{
            if(!err){
-               res.send('Insertion was successful')
+               res.send('Data Post Successfull')
            }
            else{ console.log(err.message) }
        })
@@ -40,6 +36,8 @@ const createpicture=(req, res) => {
        console.error(error);
     }}
 
+    
+
 
 const putPicture = (req, res) => {
     let user = req.body;
@@ -47,7 +45,7 @@ const putPicture = (req, res) => {
     // Execute the query using the database client
     client.query(updateQuery, (err, result) => {
         if (!err) {
-            res.send('Update was successful');
+            res.send('Success');
         } else {
             console.log(err.message);
             res.status(201).send('An error occurred during the update');

@@ -1,10 +1,12 @@
 const express = require('express');
 const morgan = require("morgan");
 const cors=require('cors');
+const multer =require("multer")
+const path = require ('path')
+const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const createError = require("http-errors");
 const cookieParser = require('cookie-parser')
-// const xssClean = require("xss-clean");
 const rateLimit = require('express-rate-limit');
 const Router = require('./src/Routers/userRouter');
 const app = express();
@@ -12,25 +14,19 @@ const app = express();
 app.use(cors(
     {
         origin: ["http://localhost:3000"],
-        methods: ["GET, POST,PATCH,DELETE"],
+        methods: ["GET, POST,PUT, PATCH, DELETE"],
         credentials:true
     }
 ));
+// app.use(cors());
 
 const rateLimiter = rateLimit ({
-    windowMs : 1*60*1000,
-    max : 100,
+    windowMs : 1*60*100,
+    max : 1000,
     message : "Too many request from this Ip. please try again later",
 })
-
-// app.use(xssClean(
-//     {
-//     origin:["http://localhost:3000/"],
-//     methods:["GET, POST"],
-//     credentials
-//     }
-// ));
-app.use('/profile', express.static('upload/images'));
+app.use(express.static('upload'));
+// app.use('/profile', express.static('upload/images'));
 
 
 
