@@ -20,9 +20,9 @@ const Watch = () => {
     setData(data);    
   }
 
-  useEffect(()=>{
-    fetchData(url);
-  },[]);
+  // useEffect(()=>{
+  //   fetchData(url);
+  // },[]);
 
 
   return (

@@ -24,12 +24,13 @@ const [errorMessage, setErrorMessage]=useState("")
         e.preventDefault();
         axios.post('http://localhost:5500/login/',values)
         .then(res=> {
-          if(res.data === "Success"){
+          console.log(res)
+          if(res.data.Status === "Success"){
             goToHome("/")
             dispatch(loggedIn())
             toast("Login Successfull")
           }else{
-            setErrorMessage(res.data);
+            setErrorMessage(res.data.Message);
           }
         })
         .catch(err => setErrorMessage(err))

@@ -1,9 +1,10 @@
-import React, { useState} from 'react'
+import React, { useState,useEffect} from 'react'
 import { Icon } from "@iconify/react";
 import { NavLink} from "react-router-dom";
 import {v4 as uuidv4} from "uuid";
 import {useSelector } from 'react-redux'
 import { useDispatch} from 'react-redux'
+
 
 import { buyNow} from '../Redux/Actions';
 
@@ -16,6 +17,7 @@ const ProductDetails = () => {
   const [message, setMessage]=useState("")
   const email = useSelector(state => state.email)
   const name = useSelector(state => state.name)
+  const [fimage, setFimage]=useState(false)
 
   
   const dispatch = useDispatch();
@@ -44,18 +46,18 @@ const ProductDetails = () => {
 // const {Name,Email,Password}=values;
 
 
-  const Size = useSelector(state => state.size)
-  const size=Size[0];
-  const [selectSize, setSelectSize]=useState(size[0])
+  // const Size = useSelector(state => state.size)
+  // const size=Size[0];
+  // const [selectSize, setSelectSize]=useState(size[0])
 
   
-  const colour=Colour[0];
-  const [selectColour, setSelectColour]=useState(colour[0])
+  // const colour=Colour[0];
+  // const [selectColour, setSelectColour]=useState(colour[0])
 
 
-  const Image = useSelector(state => state.image2)
-  const image=Image[0];
-  const [picture, setPicture]=useState(image[0])
+  // const Image = useSelector(state => state.image2)
+  // const image=Image[0];
+  // const [picture, setPicture]=useState(image[0])
 
 
  
@@ -94,11 +96,11 @@ const ProductDetails = () => {
         heading:heading,
         discount:discount,
         price:price,
-        image:picture,
-        colour:selectColour,
-        input:[],
-        quantity:count,
-        size:selectSize,
+        // image:picture,
+        // colour:selectColour,
+        // input:[],
+        // quantity:count,
+        // size:selectSize,
         category:category,
         email:email,
         name:name,
@@ -118,7 +120,7 @@ const ProductDetails = () => {
 }
 
   const handleBuy =()=>{
-      dispatch(buyNow({id, heading, picture, price, selectSize, selectColour, category, discount,count,picture}))
+      // dispatch(buyNow({id, heading, picture, price, selectSize, selectColour, category, discount,count,picture}))
   }
 
   
@@ -132,25 +134,61 @@ const ProductDetails = () => {
   }
 
 
+  const url=`http://localhost:5500/getCategory/2`;
+  const [data, setData]=useState([]);
+
   
+  const fetchData=async(url)=>{
+    const response = await fetch(url);
+    const data = await response.json();
+    // console.log(data)
+    setData(data); 
+    setFimage(true)   
+  }
+
+   useEffect(()=>{
+    fetchData(url);
+  },[]);
+
+
+  const fetchData2=async(value)=>{
+    const response = await fetch(`http://localhost:5500/getSub`);
+    const data = await response.json();
+    console.log(data)
+    // setData(data); 
+    setFimage(true)   
+  }
+ 
+
+  const handleImage =(value)=>{ 
+    fetchData2(value)
+    // const response = await fetch(`http://localhost:5500/getOneCategory/${value}`);
+    // const data = await response.json();
+    // console.log(data)
+    // setData(data); 
+  }
+
+
+
   return (
         
             <div className='pt-24 bg-white'>
-              {/* <ToastContainer/> */}
 
             <div className='grid grid-cols-12 mx-auto gap-4 w-full md:w-[80%] lg:w-[65%]'>
     
                 <div className='grid col-span-12 md:col-span-6 w-full mx-auto border overflow-hidden hover:shadow-xl shadow p-3 rounded-lg'>
                   <div className='overflow-hidden hover:shadow-xl'>
-                     <img src={picture} alt='image2' className='w-full p-1 h-72 lg:h-96 rounded-lg hover:scale-125 transition-all duration-1000'/>
+                     {
+                      fimage && <img src={data[0].image_url} alt='image2' className='w-full p-1 h-72 lg:h-96 rounded-lg hover:scale-125 transition-all duration-1000'/>
+                     }
                   </div>
               
                     <div className='grid grid-cols-12 gap-2'>
             
                       {
-                        image.map((image)=>{
-                          return <div key={uuidv4()} className='grid col-span-3 lg:col-span-2 border '>
-                                <img src={image} onClick={()=>{setPicture(image)}}  alt='b8yeis' className='w-full border p-2 h-24'/>
+                        data.map((image)=>{
+                          return <div key={uuidv4()} className='grid col-span-3 lg:col-span-2 border'>
+                                <img src={image.image_url} onClick={()=>handleImage(image.template_id)} alt='b8yeis' className='w-full border p-2 h-24'/>
                             </div>
                         })
                       }
@@ -162,7 +200,7 @@ const ProductDetails = () => {
                 
     
                 <div className='grid col-span-12 md:col-span-6 mx-auto w-full border hover:shadow-xl shadow p-3 rounded-lg'>
-                   <h1 className='text-3xl font-bold text-red-500'>{heading}</h1>
+                   {/* <h1 className='text-3xl font-bold text-red-500'>{heading}</h1> */}
                    <div className="flex">
                              <Icon icon="solar:star-bold" width="22px" className="mr-1 mt-1 text-[#FFA500]"/>
                              <Icon icon="solar:star-bold" width="22px" className="mt-1 text-[#FFA500]"/>
@@ -171,11 +209,14 @@ const ProductDetails = () => {
                              <Icon icon="solar:star-bold" width="22px" className="mx-1 mt-1 text-[#FFA500]"/>
 
                      </div>
-                     <h2 className='text-lg font-bold text-red-500 italic'>Price: {price*count}$</h2>
+                     <h2 className='text-lg font-bold text-red-500 italic'>Price: {1250}$</h2>
                     <div>
                         <h1 className='font-semibold'>Colour Family</h1>
                         <form className='flex'>
-                        {
+                         <input type='radio' checked  name="colour" value='colour' className='mr-1'/><label className='font-semibold mr-2'>Red</label>
+                         <input type='radio' checked  name="colour" value='colour' className='mr-1'/><label className='font-semibold mr-2'>White</label>
+                         <input type='radio' checked  name="colour" value='colour' className='mr-1'/><label className='font-semibold mr-2'>Black</label>
+                        {/* {
                              colour.map((colour)=>{
                               return <div key={uuidv4()}>
                               {
@@ -183,19 +224,23 @@ const ProductDetails = () => {
                               }
                             </div>
                              })
-                           } 
+                           }  */}
                         </form>
                     </div>
                     <div className=''>
                     <h1 className='font-semibold'>Size</h1>
                         <form className='flex'>
-                          {
+                        <NavLink key={uuidv4()}  className={`mr-2 mt-1 px-3 py-1 text-sm  lg:px-5 lg:py-2 border border-red-500]`}>S</NavLink>
+                        <NavLink key={uuidv4()}  className={`mr-2 mt-1 px-3 py-1 text-sm  lg:px-5 lg:py-2 border border-red-500`}>M</NavLink>
+                        <NavLink key={uuidv4()}  className={`mr-2 mt-1 px-3 py-1 text-sm  lg:px-5 lg:py-2 border border-red-500]`}>L</NavLink>
+                        <NavLink key={uuidv4()}  className={`mr-2 mt-1 px-3 py-1 text-sm  lg:px-5 lg:py-2 border border-red-500]`}>XL</NavLink>
+                          {/* {
                             size.map((size)=>{
                               return <NavLink key={uuidv4()} onClick={()=>{setSelectSize(size)}} className={`border mr-2 mt-1 px-3 py-1 text-sm  lg:px-5 lg:py-2${selectSize === size && "border-b-2 border-red-500"}`}>{size}</NavLink>
                             })
-                          }
+                          } */}
                         </form>
-
+{/* 
 
                         <form>
                           {
@@ -206,7 +251,7 @@ const ProductDetails = () => {
                               </div>
                             }))
                           }
-                        </form>
+                        </form> */}
                     </div>
                     <div>
                       {

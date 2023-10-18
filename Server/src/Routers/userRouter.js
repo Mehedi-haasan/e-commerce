@@ -11,7 +11,7 @@ const moment = require("moment")
 
 const {getItems,getItemById,createItem,putItem,patchItem,deleteItem} =require('../Controllers/Items/Items');
 const {Login,getRegister,Register,deleteUser,AdminLogin,LogOut,forgetPassword,ChangePassword}=require('../Controllers/Login/Login')
-const {GetSub,postSub,DeleteSub,Getgame}=require('../Controllers/Subscription/Subscription')
+const {GetSub,postSub,DeleteSub,Getgame,ProductsByCategory,ProductsBycategoryId,ProductsOneBycategoryId}=require('../Controllers/Subscription/Subscription')
 
 const {getGame,postGame}=require('../Controllers/Game/Game')
 
@@ -86,6 +86,13 @@ Router.delete("/deleteitem/:id",deleteItem);
 
 
 Router.get("/getSub",GetSub);
+Router.get("/home",ProductsByCategory);
+Router.get("/getCategory/:id",ProductsBycategoryId);
+Router.get("/getOneCategory/:id",ProductsOneBycategoryId);
+
+
+
+
 Router.get("/Getgame",Getgame);
 Router.post("/post", upload.single('image'), postSub);
 Router.delete("/delete/subscription/:id",DeleteSub);
@@ -113,6 +120,7 @@ Router.delete("/delete/subscription/:id",DeleteSub);
 
 
 Router.get("/getRegister",getRegister);
+
 Router.post("/user/register", Register);
 Router.post("/login/", Login);
 Router.get("/logout", LogOut);

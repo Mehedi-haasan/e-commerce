@@ -1,4 +1,4 @@
-// import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect } from 'react'
 // import Card from '../Card/Card';
 // import SubscCard from '../Card/SubscCard'
 import Game from '../Game/Game';
@@ -17,7 +17,20 @@ import TrendingProduct from './TrendingProduct';
 
 const Home = () => {
 
+ 
+  const url="http://localhost:5500/home";
+  const [data, setData]=useState([]);
 
+  
+  const fetchData=async(url)=>{
+    const response = await fetch(url);
+    const data = await response.json();
+    setData(data);    
+  }
+
+  useEffect(()=>{
+    fetchData(url);
+  },[]);
   
 
   return (
@@ -26,7 +39,8 @@ const Home = () => {
      
       <div className='grid grid-cols-12 mx-auto bg-white w-full  h-full gap border p-4'>
         <div className='grid col-span-12 lg:col-span-6'>
-          <img src='https://img.freepik.com/premium-photo/mega-sale-sticker-with-percent-price-off-announcement-limited-time-mega-sale-discount-web-banner-bri_419341-2186.jpg' alt='image2' className='h-full w-full p-2 rounded-2xl'/>
+          
+          {/* <img src={data[0].im} alt='image2' className='h-full w-full p-2 rounded-2xl'/> */}
         </div>
 
         <div className='grid col-span-12 lg:col-span-6'>
@@ -56,8 +70,8 @@ const Home = () => {
 
          <Subscripyion/>
          <Watch/>
-         <div className='bg-white'>
-         <div className='flex bg-white mx-auto w-full md:w-[95%] lg:w-[90%]'>
+         <div className='bg-gray-100'>
+         <div className='flex  mx-auto bg-gray-100 w-full md:w-[95%] lg:w-[90%]'>
                <h1 className='text-3xl mx-auto font-semibold ml-4 md:ml-0 py-5'>T-Shirts</h1>
           </div>
          </div>

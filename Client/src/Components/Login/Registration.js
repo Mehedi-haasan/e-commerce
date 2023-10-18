@@ -27,12 +27,12 @@ const [values, setValues]=useState({
         e.preventDefault();
         axios.post('http://localhost:5500/user/register',values)
         .then(res=> {
-          if(res.data === "Registration Successfull"){
+          if(res.data.Status === "Success"){
             toast(res.data)
             dispatch(loggedIn())
             goToHome("/")
           }
-          else if(res.data === "Email already exist"){
+          else if(res.data.Message === "Email already exist"){
             setErrorMessage(res.data)
           }else{
             setErrorMessage(res.data);

@@ -10,13 +10,14 @@ const Product = () => {
 
 
   
-  const url="http://localhost:5500/getPicture";
+  const url="http://localhost:5500/home";
   const [data, setData]=useState([]);
 
   
   const fetchData=async(url)=>{
     const response = await fetch(url);
     const data = await response.json();
+    console.log(data)
     setData(data);    
   }
 
@@ -34,9 +35,16 @@ const Product = () => {
             </div>
         </div> */}
         <div className='grid grid-cols-12 mx-auto w-full md:w-[95%] lg:w-[90%] gap-2'>
-        {data.map(({id,discount,image,colour,input,size,heading,stock,price}) => (
+        {/* {data.map(({id,discount,image,colour,input,size,heading,stock,price}) => (
                 <div key={uuidv4()} className=" grid col-span-12  md:col-span-4 lg:col-span-4 xl:col-span-3   duration-300 mx-auto border shadow-lg p-4 w-full px-4 rounded-lg">
                   <ProductCard id={id}  discount={discount} image={image} input={input} colour={colour} size={size} heading={heading} stock={stock} price={price}/>
+                </div>
+              ))} */}
+
+              
+                 {data.map(({id,imageUrl,name,products}) => (
+                <div key={uuidv4()} className="grid col-span-12  md:col-span-4 lg:col-span-4 xl:col-span-3   duration-300 mx-auto border shadow-lg p-4 w-full px-4 rounded-lg">
+                  <ProductCard id={id}  image={imageUrl} name={name} products={products}/>
                 </div>
               ))}
         </div>

@@ -47,9 +47,9 @@ const HotSale = () => {
         setData(data);    
       }
     
-      useEffect(()=>{
-        fetchData(url);
-      },[]);
+      // useEffect(()=>{
+      //   fetchData(url);
+      // },[]);
  
   return (
     <div className='bg-[#313CBF] rounded'>

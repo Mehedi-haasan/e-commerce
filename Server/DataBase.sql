@@ -205,3 +205,92 @@ INSERT INTO pvav (va_id, a_id, v_id) VALUES
    (4, 4, 12); -- White Shoes - Material: Canvas
    
 select pvav.va_id, pvav.a_id, pvav.v_id, pv.name, pav.value, pv.description from pvav left join pv on pvav.va_id = pv.va_id left join pav on pv.va_id = pav.a_id;
+
+
+SELECT pvav.variant_id as variant_id ,pvav.attribute_id as attribute_id,pvav.value_id as variant_value,pv.template_id,pv.name as variant_name,pv.description, pav.value as colour,pa.name Type,pa.data_type,pt.name,pt.description FROM product_variant_attribute_values as pvav LEFT JOIN product_variants as pv ON pvav.variant_id = pv.variant_id LEFT JOIN product_attribute_values as pav ON pv.variant_id = pav.attribute_id left join product_attributes as pa on pav.attribute_id = pa.attribute_id left join product_templates as pt on pa.attribute_id = pt.template_id where pvav.value_id=4;
+
+
+======================================================
+product_template
+product_varient
+stock
+
+product_attribute
+
+=====================
+
+CREATE TABLE product_attribute (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    type varchar(255),
+    CONSTRAINT pk_product_attribute PRIMARY KEY (id) 
+);
+
+=====================
+
+CREATE TABLE product_attribute_value (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    type varchar(255),
+    color varchar(255),
+    attribute_id int,
+    sequence int,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE product_attribute_value
+ADD CONSTRAINT fk_product_attribute_value
+FOREIGN KEY (attribute_id) REFERENCES product_attribute(id);
+
+=====================
+CREATE TABLE product_template (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    price int,
+    active int,
+    is_published int,
+    website_url text,
+    CONSTRAINT pk_product_template PRIMARY KEY (id) 
+);
+
+========================
+Update To store product template id
+
+ALTER TABLE product_attribute
+ADD product_template_id int;
+
+===============
+Add Foreign Key with Product Attribute and Product Template
+
+ALTER TABLE product_attribute
+ADD CONSTRAINT fk_producttemplate_product_attribute
+FOREIGN KEY (product_template_id) REFERENCES product_template(id);
+
+
+select pt.id, pt.name, pt.price,pt.active,pa.name as variant_name,pa.type as variant_type,pav.name as attr_name,pav.type as attr_type,pav.color as attr_value from product_template pt left join product_attribute pa on pa.product_template_id=pt.id left join product_attribute_value pav on pav.attribute_id=pa.id;
+
+
+ALTER TABLE product_templates
+ADD CONSTRAINT fk_product_templates_category
+FOREIGN KEY (category_id) REFERENCES product_category(id);
+
+
+
+ALTER TABLE  product_templates add column category_id int;
+
+create_by user_id
+write_by user_id
+create_date datetime
+write_date datetime on update current_datetime
+active 0/1 default 1
+
+
+ALTER TABLE product_category
+ALTER active SET DEFAULT 1;
+
+
+insert into product_category(name,image_url) values('T-Shirt','https://img.freepik.com/free-photo/black-shirt-with-word-ultra-it_1340-37775.jpg'),('Formal-Shirt','https://img.freepik.com/premium-photo/black-tee-urban-brick-setting_795881-10301.jpg'),
+('Pant','https://img.freepik.com/premium-photo/tshirt-design-ai-generated_950989-105.jpg');
+
+
+select pc.image_url,pc.name,pc.id from product_category as pc;

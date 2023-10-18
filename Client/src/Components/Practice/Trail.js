@@ -20,9 +20,9 @@ const Practice = () => {
     setData(data);    
   }
 
-  useEffect(()=>{
-    fetchData(url);
-  },[]);
+  // useEffect(()=>{
+  //   fetchData(url);
+  // },[]);
 
 
   return (
