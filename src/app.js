@@ -52,30 +52,172 @@ app.use((err, req, res, next) => {
 // create new data in db server
 // ===========================
 
-// const db = require("./models");
-// const Role = db.role;
+const db = require("./models");
+const Role = db.role;
+const Carousel = db.carousel;
+const ProductCategory = db.productCategory;
+const ProductAttribute = db.productAttribute;
+const ProductAttributeValue = db.productAttributeValue;
 
-// db.sequelize.sync({ force: true }).then(() => {
-//     console.log('Drop and Resync Db');
-//     initial();
-// });
+db.sequelize.sync({ force: true }).then(() => {
+    console.log('Drop and Resync Db');
+    initial();
+});
 
-// function initial() {
-//     Role.create({
-//         id: 1,
-//         name: "user"
-//     });
+function initial() {
+    // roles
+    Role.create({
+        id: 1,
+        name: "user"
+    });
 
-//     Role.create({
-//         id: 2,
-//         name: "moderator"
-//     });
+    Role.create({
+        id: 2,
+        name: "moderator"
+    });
 
-//     Role.create({
-//         id: 3,
-//         name: "admin"
-//     });
-// }
+    Role.create({
+        id: 3,
+        name: "admin"
+    });
+
+
+    // carousel
+    Carousel.create({
+        id: 1,
+        active: true,
+        sequence: 10,
+        name: "Carousel 1",
+        image_url: "/profile/1631713778235.jpg",
+    })
+
+    Carousel.create({
+        id: 2,
+        active: true,
+        sequence: 20,
+        name: "Carousel 2",
+        image_url: "/profile/1631713778235.jpg",
+    })
+
+    // product category
+    ProductCategory.create({
+        id: 1,
+        active: true,
+        name: "Subscriptions",
+        image_url: "/profile/1631713778235.jpg",
+    })
+
+    ProductCategory.create({
+        id: 2,
+        active: true,
+        name: "Gadgets",
+        image_url: "/profile/1631713778235.jpg",
+    })
+
+    ProductCategory.create({
+        id: 3,
+        active: true,
+        name: "Topup",
+        image_url: "/profile/1631713778235.jpg",
+    })
+
+    // product attribute
+    ProductAttribute.create({
+        id: 1,
+        active: true,
+        name: "Color",
+        display_type: "radio",
+    })
+
+    ProductAttribute.create({
+        id: 2,
+        active: true,
+        name: "Size",
+        display_type: "radio_pill",
+    })
+
+    ProductAttribute.create({
+        id: 3,
+        active: true,
+        name: "Brand",
+        display_type: "selection",
+    })
+
+    // product attribute value
+    // for attribute 1
+    ProductAttributeValue.create({
+        id: 1,
+        active: true,
+        attr_id: 1,
+        value: "red",
+    })
+
+    ProductAttributeValue.create({
+        id: 2,
+        active: true,
+        attr_id: 1,
+        value: "green",
+    })
+
+    ProductAttributeValue.create({
+        id: 3,
+        active: true,
+        attr_id: 1,
+        value: "black",
+    })
+
+    // for attribute 2
+    ProductAttributeValue.create({
+        id: 4,
+        active: true,
+        attr_id: 2,
+        value: "S",
+    })
+
+    ProductAttributeValue.create({
+        id: 5,
+        active: true,
+        attr_id: 2,
+        value: "M",
+    })
+
+    ProductAttributeValue.create({
+        id: 6,
+        active: true,
+        attr_id: 2,
+        value: "L",
+    })
+
+    ProductAttributeValue.create({
+        id: 7,
+        active: true,
+        attr_id: 2,
+        value: "XL",
+    })
+
+    // for attribute 3
+    ProductAttributeValue.create({
+        id: 8,
+        active: true,
+        attr_id: 3,
+        value: "Samsung",
+    })
+
+    ProductAttributeValue.create({
+        id: 9,
+        active: true,
+        attr_id: 3,
+        value: "LG",
+    })
+
+    ProductAttributeValue.create({
+        id: 10,
+        active: true,
+        attr_id: 3,
+        value: "Google",
+    })
+
+}
 
 module.exports = app;
 
