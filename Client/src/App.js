@@ -37,6 +37,13 @@ import Payment from "./Components/Payment/Payment";
 import Trail from './Components/Practice/Trail'
 import TrailDetails from "./Components/Practice/TrailDetails";
 import LadiesCardDetails from "./Components/Ladies-Corner/LadiesCardDetails";
+import AllPay from "./Components/Payment/AllPay";
+import Bkash from "./Components/Payment/Bkash";
+import Nagad from "./Components/Payment/Nagad";
+import Rocket from "./Components/Payment/Rocket";
+import Upai from "./Components/Payment/Upai";
+import ProductReq from "./Components/Products/ProductReq";
+import AllProduct from "./Components/Products/AllProduct";
 
 
 
@@ -90,6 +97,13 @@ function App() {
           <Route path="/liveChat" element={ <LiveChat/> }/>
           <Route path="/adminpost" element={ <AdminPost/> }/>
           <Route path="/hodaiPay" element={ <Payment/> }/>
+          <Route path="/allpay" element={ <AllPay/> }/>
+          <Route path="/bkash" element={ <Bkash/> }/>
+          <Route path="/nagad" element={ <Nagad/> }/>
+          <Route path="/rocket" element={ <Rocket/> }/>
+          <Route path="/upai" element={ <Upai/> }/>
+          <Route path="/allproduct" element={ <AllProduct/> }/>
+          <Route path="/productrequest" element={ <ProductReq/> }/>
           <Route path="/ladiesdetails" element={<LadiesCardDetails/>}/>
           <Route path="/privacypolicy" element={ <PrivacyPolicy/> }/>
           <Route path="/trail" element={ <Trail/> }/>

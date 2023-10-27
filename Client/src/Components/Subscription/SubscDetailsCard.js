@@ -3,39 +3,11 @@ import { Icon } from "@iconify/react";
 import { NavLink} from "react-router-dom";
 import {v4 as uuidv4} from "uuid";
 import {useDispatch, useSelector } from 'react-redux'
-import {buyNow} from '../Redux/Actions';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import {buyNow,addToCart,totapP} from '../Redux/Actions';
 
 
 const SubscDetailsCard = () => {
-  var settings1 = {
-    // dots: true,
-    infinite: true,
-    autoplaySpeed: 5000,
-    speed: 1500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1500,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+
   const dispatch = useDispatch()
   const [message, setMessage]=useState("")
   const [addCart, setAddCart]=useState(true)
@@ -68,6 +40,7 @@ const SubscDetailsCard = () => {
   const Image = useSelector(state => state.image2)
   const image=Image[0];
   const [picture, setPicture]=useState(image[0].image)
+  
 
  
   const Rules = useSelector(state => state.rule)
@@ -91,36 +64,39 @@ const [values, setValues]=useState({
 })
 
 
-  const handleAddCart =()=>{
-      fetch('http://localhost:5500/addcart', {
-        method: 'POST',
-        body: JSON.stringify({
-          id:id,
-          heading:heading,
-          discount:discount,
-          price:price,
-          image:picture,
-          colour:selectColour,
-          input:[],
-          quantity:count,
-          size:selectSize,
-          category:category,
-          email:email,
-          name:name,
-          player_id:values.player_id,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-})
-  .then((response) => response.json())
-  .then((json) =>{
-    if(json === "Add to cart"){
-      setMessage(json)
-    }
-  });
-  }
-
+//   const handleAddCart =()=>{
+//       fetch('http://localhost:5000/addcart', {
+//         method: 'POST',
+//         body: JSON.stringify({
+//           id:id,
+//           heading:heading,
+//           discount:discount,
+//           price:price,
+//           image:picture,
+//           colour:selectColour,
+//           input:[],
+//           quantity:count,
+//           size:selectSize,
+//           category:category,
+//           email:email,
+//           name:name,
+//           player_id:10,
+//         }),
+//         headers: {
+//           'Content-type': 'application/json; charset=UTF-8',
+//         },
+// })
+//   .then((response) => response.json())
+//   .then((json) =>{
+//     if(json === "Add to cart"){
+//       setMessage(json)
+//     }
+//   });
+//   }
+const handleAddCart =()=>{
+  dispatch(totapP({price,count}));
+  dispatch(addToCart({id, heading, picture, price, selectSize, selectColour, category, discount,count,name,email})) 
+}
 
 
   const handleBuy =()=>{
@@ -129,7 +105,7 @@ const [values, setValues]=useState({
 
   const handleRemoveCart =()=>{
     setAddCart(true);
-    fetch(`http://localhost:5500/delete/cart/${id}`, {
+    fetch(`http://localhost:5000/delete/cart/${id}`, {
         method: 'DELETE',
       });
   }
@@ -138,7 +114,7 @@ const [values, setValues]=useState({
   
   return (
         
-            <div className='pt-24 bg-white'>
+            <div className='pt-5 lg:pt-24 bg-white'>
 
 
             <div className='grid grid-cols-12 mx-auto gap-4 w-full md:w-[80%] lg:w-[65%]'>
@@ -148,19 +124,14 @@ const [values, setValues]=useState({
                     <div className='overflow-hidden hover:shadow-xl'>
                       <img src={picture} alt='image2' className='w-full p-1 h-72 lg:h-96 rounded-lg  transition-all duration-1000'/>
                     </div>
-                        {/* <Slider {...settings1}>
-                        {image.map((image) => {
-                            return  <div key={uuidv4()}  className="overflow-hidden">
-                                    <img onClick={(e)=>{setPicture(image.image)}} src={image.image} alt='' className='w-[94%] mx-auto h-20 hover:scale-125 transition-all duration-1000 rounded'/>
-                            </div>
-                            })}
-                        </Slider> */}
+
+     
                   </div>
                 </div>
                 
     
                 <div className='grid col-span-12 md:col-span-6 mx-auto w-full p-3 rounded-lg'>
-                   <h1 className='text-3xl font-bold text-red-500'>{heading}</h1>
+                   <h1 className='text-xl lg:text-2xl font-bold text-red-500'>{heading}</h1>
                    <div className="flex">
                              <Icon icon="solar:star-bold" width="22px" className="mr-1 mt-1 text-[#FFA500]"/>
                              <Icon icon="solar:star-bold" width="22px" className="mt-1 text-[#FFA500]"/>
@@ -169,63 +140,41 @@ const [values, setValues]=useState({
                              <Icon icon="solar:star-bold" width="22px" className="mx-1 mt-1 text-[#FFA500]"/>
 
                      </div>
-                     <h2 className='text-lg font-semibold  flex'>Price: <span className='text-red-500 px-1'>{price}</span> $</h2>
-                    {/* <div className='py-2'>
-                        <h1 className='font-semibold'>Colour Family</h1>
-                        <form className='flex'>
-                        {
-                          colour.map((colour)=>{
-                              return <div key={uuidv4()}>
-                                {
-                                  selectColour === colour.value ? <div> <input type='radio' checked onClick={(e)=>{setSelectColour(colour.value);setValues({...values, colour:colour.value})}} name="colour" value={`${colour.value}`} className='mr-1'/><label className='font-semibold mr-2'>{colour.value}</label></div> : <div> <input type='radio' onClick={(e)=>{setSelectColour(colour.value);setValues({...values, colour:colour.value})}} name="colour" value={`${colour.value}`} className='mr-1'/><label className='font-semibold mr-2'>{colour.value}</label></div>
-                                }
-                            </div>
-                             })
-                           } 
-                        </form>
-                    </div> */}
+                     <h2 className='text-md lg:text-lg font-semibold py-3 flex'>Price: <span className='text-red-500 px-1'>{price}</span> $</h2>
+    
                     <div className=''>
+                    <h1 className='font-semibold pb-1 text-md lg:text-lg'>Plan</h1>
 
-                    {/* <h1 className='font-semibold'>Size</h1>
-                       <div className='grid grid-cols-12'>
+
+                        <div className='grid grid-cols-12'>
                             {
                               size.map((size)=>{
-                                return <div className='grid col-span-4'>
-                                  <NavLink key={uuidv4()} onClick={(e)=>{setPrice(size.price);setSelectSize(size.size)}} className={`border mr-2 my-1 px-3 py-1 text-sm rounded text-center lg:px-5 lg:py-2${selectSize === size.size && "border-b-2 border-red-500"}`}>{size.size}</NavLink>
+                                return <div className='grid col-span-3'>
+                                  <NavLink key={uuidv4()} onClick={(e)=>{setPrice(size.price);setSelectSize(size.size)}} className={`border mr-2 my-1 px-3 py-1 text-sm lg:text-lg rounded text-center lg:px-5 lg:py-2${selectSize === size.size && "border-b-2 border-red-500"}`}>{size.size}</NavLink>
                                 </div>
                               })
                             }
-                        </div> */}
+                       </div> 
 
-
-
-                   <div className='py-5'>
-                      {
-                        rule.map((rule)=>{
-                         return <ol key={uuidv4()}>
-                            <li className='text-sm text-gray-500 py-1 flex'><Icon icon="ph:circle-fill" width="6px" className='mt-[8px] mr-2'/> {rule.rule}</li>
-                          </ol>
-                        })
-                       } 
-                   </div>
+           
                    
 
                         { <form className='py-2'>
                           {
                             input.map((input)=>{
                               return <div key={uuidv4()} className='py-1'>
-                                  <h1 className='font-semibold '>{input.name}</h1>
-                                  <input placeholder={input.value} type={input.type} name={input.name} className='focus:outline-none border rounded py-1 px-2' />  
+                                  <h1 className='font-semibold text-sm lg:text-lg'>{input.name}</h1>
+                                  <input placeholder={input.value} type={input.type} name={input.name} className='focus:outline-none border text-sm lg:text-lg rounded py-1 px-2' />  
                               </div>
                             })
                           }
                         </form> 
                         }
                     </div>
-                    <div className='pt-2 pb-3'>
+                    {/* <div className='pt-2 pb-3'>
                       <h1>Player id</h1>
                       <input type='text' placeholder='Player Id' onChange={(e)=>{setValues({...values, player_id:e.target.value})}} className='focus:outline-none border rounded py-1 px-2'/>
-                    </div>
+                    </div> */}
                     <div>
                       {
                         message && <h1 className='font-semibold py-2 text-xl'>{message}</h1>

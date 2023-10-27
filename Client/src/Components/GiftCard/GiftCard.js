@@ -5,7 +5,7 @@ import Card from '../Card/Card';
 
 const GiftCard = () => {
 
-  const url="http://localhost:5500/getitems";
+  const url="http://localhost:5000/getitems";
   const [data, setData]=useState([]);
   const fetchData=async(url)=>{
     const response = await fetch(url);

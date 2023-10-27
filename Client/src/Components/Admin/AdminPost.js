@@ -3,31 +3,75 @@ import React, { useState } from 'react'
 
 
 const TShirt = () => {
+
+ const [finput, setFInput]=useState("");
+ const [fsize, setFSize]=useState("")
+ const [fcolour, setFColour]=useState("")
+ const [fimage, setFImage]=useState("")
+ const [message, setMessage]=useState();
+ 
     const [values, setValues]=useState({
-        productName:"",
-        ProductTemplateName:'',
-        ProductTemplateDesc:'',
-        ProductTemplateCategoryId:'',
-        ProductAttributeTemplateId:"",
-        ProductAttributeName:"",
-        ProductAttributeDatatype:"",
-        ProductAttributeValuesAttributeId:'',
-        ProductAttributeValuesValue:"",
+        heading:"",
+        image:[],
+        input:[],
+        size:[],
+        price:"",
+        rating:"",
+        stock:"",
+        colour:[],
+        category:"Watch",
         discount:"",
     })
 
+
+    const handleInput =(e)=>{
+      setValues({
+        ...values,
+        input:[...values.input, finput],
+      })
+      setFInput("");
+    }
+
+    const handlecolour =(e)=>{
+      setValues({
+        ...values,
+        colour:[...values.colour, fcolour],
+      })
+      setFColour("");
+    }
+
+    const handleImage =(e)=>{
+      setValues({
+        ...values,
+       image:[...values.image, fimage],
+      })
+      setFImage("");
+    }
+
+
+    const handletime =(e)=>{
+      setValues({
+        ...values,
+        size:[...values.size, fsize],
+      })
+      setFSize("");
+    }
+
+    
+
+
+
     const handleSubmit = (e)=>{
       e.preventDefault();
-      console.log(values)
-      // axios.post('http://localhost:5500/createpicture/',values)
-      // .then(res=> {
-      //   if(res.data === "Data Post Successfull"){
-      //     // setMessage(res.data)
-      //   }else{
+      axios.post('http://localhost:5500/createpicture/',values)
+      .then(res=> {
+        if(res.data === "Data Post Successfull"){
+          setMessage(res.data)
+        }else{
           
-      //   }
-      // })
-      // .catch(err => console.log(err))
+        }
+      })
+      .catch(err => console.log(err))
       
 
       // var formData = new FormData();
@@ -53,18 +97,18 @@ const TShirt = () => {
 
 
 
-const [ProductTemplates, setProductTemplates]=useState(false);
-const [ProductAttribute, setProductAttribute]=useState(false);
-const [ProductAttributeValues, setProductAttributeValues]=useState(false);
-const [ProductVariant, setProductVariant]=useState(false);
-const [product_variant_attribute_values, setproduct_variant_attribute_values]=useState(false);
+const [ginfo, setGinfo]=useState(false);
+const [att_varient, setAttVarient]=useState(false);
+const [salse, setSalse]=useState(false);
+const [purchase, setPurchase]=useState(false);
+const [inventory, setInventory]=useState(false);
 const [account, setAccount]=useState(false);
 
 
 
-// const handleDelete =(e)=>{
+const handleDelete =(e)=>{
       
-// }
+}
 
   return (
     <div className='w-full bg-white mx-auto'>
@@ -72,33 +116,28 @@ const [account, setAccount]=useState(false);
         <h1 className='text-center text-3xl font-bold py-5'>Post Item</h1>
        <div className='w-[80%] mx-auto py-3'>
          <h1 className='text-xl font-bold py-2'>Product Name</h1>
-         <input placeholder='Enter your product name' name='product' onChange={(e)=>{setValues({...values,productName:e.target.value})}} className='focus:outline-none w-[400px] border p-1 rounded'/>
+         <input placeholder='Enter your product name' name='product' onChange={(e)=>{}} className='focus:outline-none w-[400px] border p-1 rounded'/>
        </div>
        <div className='w-[80%] mx-auto py-3'>
-         <button onClick={()=>{setProductTemplates(true);setProductAttribute(false);setProductAttributeValues(false);setProductVariant(false);setproduct_variant_attribute_values(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Product Templates</button>
-         <button onClick={()=>{setProductTemplates(false);setProductAttribute(true);setProductAttributeValues(false);setProductVariant(false);setproduct_variant_attribute_values(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Product Attribute</button>
-         <button onClick={()=>{setProductTemplates(false);setProductAttribute(false);setProductAttributeValues(true);setProductVariant(false);setproduct_variant_attribute_values(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Product Attribute Values</button>
-         <button onClick={()=>{setProductTemplates(false);setProductAttribute(false);setProductAttributeValues(false);setProductVariant(true);setproduct_variant_attribute_values(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Product Variant</button>
-         <button onClick={()=>{setProductTemplates(false);setProductAttribute(false);setProductAttributeValues(false);setProductVariant(false);setproduct_variant_attribute_values(true);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>product_variant_attribute_values</button>
-         <button onClick={()=>{setProductTemplates(false);setProductAttribute(false);setProductAttributeValues(false);setProductVariant(false);setproduct_variant_attribute_values(false);setAccount(true)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Accounting</button>
+         <button onClick={()=>{setGinfo(true);setAttVarient(false);setSalse(false);setPurchase(false);setInventory(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>General Information</button>
+         <button onClick={()=>{setGinfo(false);setAttVarient(true);setSalse(false);setPurchase(false);setInventory(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Attribute & Varient</button>
+         <button onClick={()=>{setGinfo(false);setAttVarient(false);setSalse(true);setPurchase(false);setInventory(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Sales</button>
+         <button onClick={()=>{setGinfo(false);setAttVarient(false);setSalse(false);setPurchase(true);setInventory(false);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Purchase</button>
+         <button onClick={()=>{setGinfo(false);setAttVarient(false);setSalse(false);setPurchase(false);setInventory(true);setAccount(false)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Inventory</button>
+         <button onClick={()=>{setGinfo(false);setAttVarient(false);setSalse(false);setPurchase(false);setInventory(false);setAccount(true)}} className='border-y-2 border px-4 py-1 focus:border-t-red-500 focus:border-b-0'>Accounting</button>
        </div>
-
-      
   {
-    ProductTemplates && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
+    ginfo && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Name</h1> 
-        <input type='text' placeholder='Name' onChange={(e)=>{setValues({...values, ProductTemplateName:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Attribute</h1>
       </div>
       
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Description</h1>
-        <input type='text' placeholder='Description' onChange={(e)=>{setValues({...values, ProductTemplateDesc:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Value</h1>
       </div>
 
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Category Id</h1>
-        <input type='text' placeholder='Category Id' onChange={(e)=>{setValues({...values, ProductTemplateCategoryId:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='text-right font-semibold py-1'>Configure</h1>
       </div>
     </div>
   }
@@ -107,80 +146,68 @@ const [account, setAccount]=useState(false);
 
 
     {
-      ProductAttribute && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
+      att_varient && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Template Id</h1> 
-        <input type='text' placeholder='Template Id' onChange={(e)=>{setValues({...values,ProductAttributeTemplateId:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Attribute</h1>
       </div>
       
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Name</h1>
-        <input type='text' placeholder='Name' onChange={(e)=>{setValues({...values,ProductAttributeName:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Value</h1>
       </div>
 
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Datatype</h1>
-        <input type='text' placeholder='Datatype' onChange={(e)=>{setValues({...values,ProductAttributeDatatype:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='text-right font-semibold py-1'>Configure</h1>
       </div>
   </div>
     }
 
 
 {
-      ProductAttributeValues && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
-      <div className='grid col-span-6'>
-        <h1 className='font-semibold py-1'>Attribute Id</h1> 
-        <input type='text' placeholder='Attribute Id' onChange={(e)=>{setValues({...values, ProductAttributeValuesAttributeId:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
-      </div>
-      
-      <div className='grid col-span-6'>
-        <h1 className='font-semibold py-1'>Value</h1>
-        <input type='text' placeholder='Description' onChange={(e)=>{setValues({...values, ProductAttributeValuesValue:e.target.value})}} className='focus:outline-none border rounded p-1 w-[350px]'/>
-      </div>
-
-      {/* <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Category Id</h1>
-        <input type='text' placeholder='Category Id' className='focus:outline-none border rounded p-1 w-[350px]'/>
-      </div> */}
-  </div>
-    }
-
-
-{
-      ProductVariant && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
+      salse && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Template Id</h1> 
-        <input type='text' placeholder='Template Id' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Attribute</h1>
       </div>
       
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Name</h1>
-        <input type='text' placeholder='Name' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Value</h1>
       </div>
 
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Description</h1>
-        <input type='text' placeholder='Description' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='text-right font-semibold py-1'>Configure</h1>
       </div>
   </div>
     }
 
 
 {
-      product_variant_attribute_values && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
+      purchase && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Varient Id</h1> 
-        <input type='text' placeholder='Varient Id' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Attribute</h1>
       </div>
       
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Attribute Id</h1>
-        <input type='text' placeholder='Attribute Id' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Value</h1>
       </div>
 
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Value Id</h1>
-        <input type='text' placeholder='Value Id' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='text-right font-semibold py-1'>Configure</h1>
+      </div>
+  </div>
+    }
+
+
+{
+      inventory && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
+      <div className='grid col-span-4'>
+       <h1 className='font-semibold py-1'>Attribute</h1>
+      </div>
+      
+      <div className='grid col-span-4'>
+       <h1 className='font-semibold py-1'>Value</h1>
+      </div>
+
+      <div className='grid col-span-4'>
+       <h1 className='text-right font-semibold py-1'>Configure</h1>
       </div>
   </div>
     }
@@ -189,25 +216,20 @@ const [account, setAccount]=useState(false);
 {
       account && <div className='grid grid-cols-12 w-[80%] mx-auto py-6'>
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Attribute</h1> 
-        <input type='text' placeholder='Name' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Attribute</h1>
       </div>
       
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Description</h1>
-        <input type='text' placeholder='Description' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='font-semibold py-1'>Value</h1>
       </div>
 
       <div className='grid col-span-4'>
-        <h1 className='font-semibold py-1'>Category Id</h1>
-        <input type='text' placeholder='Category Id' className='focus:outline-none border rounded p-1 w-[350px]'/>
+       <h1 className='text-right font-semibold py-1'>Configure</h1>
       </div>
   </div>
     }
 
 
-
-      <div className='py-20'><button onClick={handleSubmit} className='block mx-auto border rounded px-5 py-2 font-semibold'>Submit</button></div>
     </div>
   )
 }

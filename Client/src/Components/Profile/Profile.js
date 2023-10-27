@@ -10,7 +10,7 @@ import { loggedOut } from "../Redux/Actions";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const [joined, setJoined] = useState(true);
+  const [joined, setJoined] = useState(false);
   const [image, setImage] = useState("https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.2.834674141.1685085168&semt=ais");
   const download = useNavigate();
   const editprofile = useNavigate();
@@ -24,7 +24,7 @@ const Profile = () => {
   // };
 
   const handleLogOut = () =>{
-    axios.get('http://localhost:5500/logout')
+    axios.get('http://localhost:5000/logout')
     .then(res=> {
       console.log(res.data)
       if(res.data === "Success"){

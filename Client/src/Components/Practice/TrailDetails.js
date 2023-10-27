@@ -4,38 +4,12 @@ import { NavLink} from "react-router-dom";
 import {v4 as uuidv4} from "uuid";
 import {useDispatch, useSelector } from 'react-redux'
 import {buyNow} from '../Redux/Actions';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 
 
 const TrailDetails = () => {
-  var settings1 = {
-    // dots: true,
-    infinite: true,
-    autoplaySpeed: 5000,
-    speed: 1500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1500,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+ 
+
   const dispatch = useDispatch()
   const [message, setMessage]=useState("")
   const [addCart, setAddCart]=useState(true)
@@ -138,7 +112,7 @@ const [values, setValues]=useState({
   
   return (
         
-            <div className='pt-24 bg-white'>
+            <div className='pt-4 lg:pt-24 bg-white'>
 
 
             <div className='grid grid-cols-12 mx-auto gap-4 w-full md:w-[80%] lg:w-[65%]'>
@@ -148,13 +122,13 @@ const [values, setValues]=useState({
                     <div className='overflow-hidden hover:shadow-xl'>
                       <img src={picture} alt='image2' className='w-full p-1 h-72 lg:h-96 rounded-lg  transition-all duration-1000'/>
                     </div>
-                        {/* <Slider {...settings1}>
+                    <div className='grid grid-cols-12'>
                         {image.map((image) => {
-                            return  <div key={uuidv4()}  className="overflow-hidden">
+                            return  <div key={uuidv4()} className="overflow-hidden grid col-span-2">
                                     <img onClick={(e)=>{setPicture(image.image)}} src={image.image} alt='' className='w-[94%] mx-auto h-20 hover:scale-125 transition-all duration-1000 rounded'/>
                             </div>
                             })}
-                        </Slider> */}
+                      </div>
                   </div>
                 </div>
                 

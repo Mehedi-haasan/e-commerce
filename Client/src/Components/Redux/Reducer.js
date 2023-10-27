@@ -61,7 +61,7 @@ export const reducer=(state=initialState, action)=>{
         } 
 
         case TOTAL_PRICE:
-            let total =state.totalPrice+action.payload.tprice;
+            let total =state.totalPrice+(action.payload.price*action.payload.count);
             return{
             ...state,
             totalPrice:total
@@ -181,7 +181,7 @@ export const reducer=(state=initialState, action)=>{
                     count:action.payload.count,
                     name:action.payload.Name,
                     email:action.payload.Email,
-                    password:action.payload.Password,
+                    // password:action.payload.Password,
 
                 }
                     return{

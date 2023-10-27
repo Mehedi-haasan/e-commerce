@@ -41,7 +41,7 @@ const Banner = () => {
         {
           image.map((image)=>{
             return     <div className="relative focus:outline-none  px-5 bg-white">
-            <img className="w-[90%] mx-auto h-[350px] focus:outline-none py-5 md:h-[650px]"
+            <img className="w-[90%] mx-auto h-[280px] focus:outline-none py-5 md:h-[650px]"
               src={image.image}
               alt=""
             />

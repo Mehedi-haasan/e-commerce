@@ -11,7 +11,7 @@ root.render(
  <div className='bg-[#00308F]'>
    <div className='lg:pt-14  xl:px-[8%] xxl:px-[10%] bg-[#00308F]'>
     <Provider store={store}>
-    <App />
+     <App />
    </Provider> 
   </div>
  </div>

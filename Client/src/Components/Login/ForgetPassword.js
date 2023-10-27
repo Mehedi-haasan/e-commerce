@@ -16,7 +16,7 @@ const [errorMessage, setErrorMessage]=useState("")
     axios.defaults.withCredentials =true
       const handleSubmit =(e)=>{
         e.preventDefault();
-        axios.post('http://localhost:5500/forgetPassword/',values)
+        axios.post('http://localhost:5000/forgetPassword/',values)
         .then(res=> {
           console.log(res.data)
           if(res.data === "Success"){

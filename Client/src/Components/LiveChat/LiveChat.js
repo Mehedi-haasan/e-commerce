@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 
 const LiveChat = () => {
 
-  const url="http://localhost:5500/getsub";
+  const url="http://localhost:5000/getsub";
   const [data, setData]=useState([]);
   const fetchData=async(url)=>{
     const response = await fetch(url);

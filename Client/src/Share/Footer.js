@@ -27,12 +27,12 @@ const Footer = () => {
 
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full  lg:w-[95%] gap-4 mx-auto'>
-        <div className='mb-6 pb-5 ml-5'>
+        <div className='mb-6 pb-5 ml-14'>
             <div className='flex py-3 mt-5'>
               {/* <Icon icon="zondicons:location" width='30px' style={{color:"#06D889"}} /> */}
-              <h1 className='font-semibold text-2xl'>What is SHOPXBD?</h1>
+              <h1 className='font-semibold text-2xl'>What is MahlunShop?</h1>
               </div>
-                <p className="text-[#b5b5b5]">SHOPXBD is an Online Shopping Mall in Bangladesh.
+                <p className="text-[#b5b5b5]">MahlunShop is an Online Shopping Mall in Bangladesh.
                      We deliver various types of Unique & Quality products all over Bangladesh.</p>
  
 
@@ -49,7 +49,7 @@ const Footer = () => {
 
 
 
-        <div className='ml-14 text-[#b5b5b5]'>
+        <div className='ml-14 md:ml-0 text-[#b5b5b5]'>
             <h1 className=' text-2xl text-black font-semibold pt-8'>Useful links</h1>
             <a href='dvb' className='hover:text-red-500 pt-4 flex py-1'>Renew Subscription</a>
             <a href='jiuds' className='hover:text-red-500 flex py-1'>Product Request</a>
@@ -71,13 +71,9 @@ const Footer = () => {
 
 
        
-        <div className='ml-14'>
-          <h1 className=' text-2xl font-semibold pt-8'>Join our Newsletter</h1><br/>
-            <h1 className='flex'>Join 25,000+ others and never miss out on new tips, tutorials, and more</h1>
-             <div className='flex mt-3'>
-               <input type='text' placeholder='Email here' className='p-2 border rounded focus:outline-none'/>
-               <button className='px-6 py-1 border bg-[#06D889]'><Icon icon="mingcute:arrow-right-fill" width="22px" className='text-white'/></button>
-             </div>
+        <div className='ml-14 md:ml-0'>
+          <h1 className=' text-2xl font-semibold pt-8'>Offer Box</h1><br/>
+          <h1 className='text-sm'>Use coupon NEWDAY <br/>Get 15/- Discount!</h1>
         </div>
        
 

@@ -16,7 +16,7 @@ const EditProfile = () => {
 
     const handleSubmit =(e)=>{
         e.preventDefault();
-        axios.patch('http://localhost:5500/changePassword/',values)
+        axios.patch('http://localhost:5000/changePassword/',values)
         .then(res=> {
             if(res.data === "Update was successful"){
                 setValues({displayName:"",email:"",password:"",npassword:"",cnpassword:"",})

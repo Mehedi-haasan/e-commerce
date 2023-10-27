@@ -61,7 +61,7 @@ const PostSub = () => {
                    },
       }
      
-      const res = await axios.post("http://localhost:5500/postGame", formData,config);
+      const res = await axios.post("http://localhost:5000/postGame", formData,config);
       console.log(res); 
     }
 

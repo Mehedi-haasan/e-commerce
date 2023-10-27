@@ -1,11 +1,10 @@
-// import { Icon } from "@iconify/react";
 
 
 const CartProducts = ({id,image,heading,colour,size,price,category,count,total,name,email,password}) => {
     
-
+      // console.log(count)
     const handleDelete =()=>{
-      fetch(`http://localhost:5500/delete/cart/${id}`, {
+      fetch(`http://localhost:5000/delete/cart/${id}`, {
            method: 'DELETE',
          });
     }

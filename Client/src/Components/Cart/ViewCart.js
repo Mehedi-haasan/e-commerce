@@ -6,8 +6,9 @@ import {useSelector } from 'react-redux'
 
 
 const ViewCart = () => {
+  const cart = useSelector(state => state.cart)
   const email = useSelector(state => state.email)
-  const url=`http://localhost:5500/cart/${email}`;
+  const url=`http://localhost:5000/cart/${email}`;
   const [data, setData]=useState([]);
 
 
@@ -57,10 +58,10 @@ const ViewCart = () => {
                 </div>
 
                 {
-                    data.map(({id,image,category,heading,colour,size,price,name,email,password,quantity,total})=>{
+                    cart.map(({id,image,category,heading,colour,size,price,name,email,password,count,total})=>{
                         return <div key={id}>
                             
-                                <CartProducts id={id} image={image} heading={heading} category={category} size={size} name={name} email={email} password={password} colour={colour} price={price} count={quantity} total={total}/>
+                                <CartProducts id={id} image={image} heading={heading} category={category} size={size} name={name} email={email} password={password} colour={colour} price={price} count={count} total={total}/>
                             </div>
                     })
                 }

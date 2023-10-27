@@ -1,29 +1,32 @@
 import React, { useState,useEffect } from 'react'
 
 import {useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom';
 
 
 const Payment = () => {
 
   
    const email = useSelector(state => state.email);
+   const cart = useSelector(state => state.cart);
+   const total = useSelector(state => state.totalPrice);
 
   
-   const url=`http://localhost:5500/cart/${email}`;
+   const url=`http://localhost:5000/cart/${email}`;
    const [data, setData]=useState([]);
 
-   const [price, setPrice]=useState(0);
+   // const [price, setPrice]=useState(0);
    
 
-   const url2=`http://localhost:5500/cart/total/${email}`;
+   // const url2=`http://localhost:5000/cart/total/${email}`;
 
 
-   const fetchData2=async(url2)=>{
-     const response = await fetch(url2);
-     const data2 = await response.json();
-     setPrice(data2);  
+   // const fetchData2=async(url2)=>{
+   //   const response = await fetch(url2);
+   //   const data2 = await response.json();
+   //   setPrice(data2);  
 
-   }
+   // }
 
   const fetchData=async(url)=>{
     const response = await fetch(url);
@@ -33,7 +36,7 @@ const Payment = () => {
 
   useEffect(()=>{
     fetchData(url);
-    fetchData2(url2);
+   //  fetchData2(url2);
   },[]);
 
 
@@ -83,10 +86,10 @@ const Payment = () => {
 
                 <div className='grid col-span-12'>
                  {
-                  data.map((data)=>{
+                  cart.map((data)=>{
                      return <div className='grid grid-cols-12'>
                            <div className='grid col-span-6 border-b'><h1 className='font-semibold py-3'>{data.heading}</h1></div>
-                           <div className='grid col-span-6 border-b'><h1 className='text-right font-semibold py-3'>{data.total_price}</h1></div>
+                           <div className='grid col-span-6 border-b'><h1 className='text-right font-semibold py-3'>{data.price*data.count} Tk</h1></div>
                      </div>
                   })
                 } 
@@ -95,17 +98,17 @@ const Payment = () => {
                 <div className='grid col-span-6 border-b'><h1  className='text-right font-semibold py-3'>{54723}</h1></div> */}
 
                 <div className='grid col-span-6 border-b'><h1 className='font-semibold py-3'>Subtotal</h1></div>
-                <div className='grid col-span-6 border-b'><h1 className='text-right font-semibold text-red-500 py-3'>{price}</h1></div>
+                <div className='grid col-span-6 border-b'><h1 className='text-right font-semibold text-red-500 py-3'>{total} Tk</h1></div>
 
               
                 <div className='grid col-span-6 border-b'><h1 className='font-semibold py-3'>Shiping</h1></div>
-                <div className='grid col-span-6 border-b'><h1 className='text-right font-semibold py-3'>Delivery charge: <span className='text-red-500'>{60}</span></h1></div>
+                <div className='grid col-span-6 border-b'><h1 className='text-right font-semibold py-3'>Delivery charge: <span className='text-red-500'>{60} Tk</span></h1></div>
          
                 <div className='grid col-span-6 border-b'><h1 className='font-bold py-3 text-xl '>Total</h1></div>
-                <div className='grid col-span-6 border-b'><h1 className='text-right text-xl text-red-500 font-bold py-3'>{price+60}</h1></div>
+                <div className='grid col-span-6 border-b'><h1 className='text-right text-xl text-red-500 font-bold py-3'>{total+60} Tk</h1></div>
              </div>
              <p className='px-1 py-3 text-sm'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</p>
-             <button className='block mx-auto py-2 w-full border rounded my-6 font-semibold text-white bg-black hover:bg-red-500'>Payment</button>
+             <NavLink to="/allpay" className='block mx-auto py-2 w-full border text-center rounded my-6 font-semibold text-white bg-black hover:bg-red-500'>Payment</NavLink>
           </div>
 
         </div>

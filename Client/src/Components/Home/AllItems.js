@@ -1,30 +1,8 @@
-
-import React, { useState,useEffect } from 'react'
+import React,{useEffect,useState} from 'react'
 import {v4 as uuidv4} from "uuid";
-import ProductCard from './ProductCard';
+import AllItemCard from './AllItemCard';
 
-
-
-
-
-const Practice = () => {
-
-
-  
-  const url="http://localhost:5000/test1";
-  const [data2, setData2]=useState([]);
- 
-  
-  const fetchData=async(url)=>{
-    const response = await fetch(url);
-    const data = await response.json();
-    setData2(data);    
-  }
-
-  useEffect(()=>{
-    fetchData(url);
-  },[]);
-
+const AllItems = () => {
 
   const data =[
     {
@@ -608,23 +586,50 @@ const Practice = () => {
     }   
  ]
 
+
   return (
-    <div className='bg-[#F6F6F6]'>
-       
-        <div className='w-full md:w-[95%] lg:w-[90%] mx-auto'>
-            <div className='flex'>
-               {/* <h1 className='text-3xl mx-auto font-semibold ml-4 md:ml-0 py-10'>T-Shirt</h1> */}
-            </div>
+    <div className='bg-white'>
+      <div className='bg-white grid grid-cols-12 w-[97%] md:w-[95%] lg:w-[90%] mx-auto'>
+        <div className='grid col-span-12 lg:col-span-4 mt-5 px-5'>
+            <h1 className='font-bold text-lg py-3'>Subscriptions</h1>
+            {
+            data.map(({id,discount,image,colour,input,size,heading,stock,price,rules,category,rating})=>{
+              return <div key={uuidv4()} className='grid  py-2 border-b rounded mr-4'>
+                    <AllItemCard id={id}  discount={discount} image={image} input={input} colour={colour} category={category} rules={rules} size={size} heading={heading} stock={stock} price={price}/>
+              </div>
+        
+            })
+          }
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mx-auto w-[97%] md:w-[95%] lg:w-[90%] gap-2 mt-3'>
-        {data.map(({id,discount,image,colour,input,size,heading,stock,price,rules,category}) => (
-                <div key={uuidv4()} className="grid duration-300 mx-auto border shadow p-2 w-full px-4 bg-white rounded-lg">
-                  <ProductCard id={id}  discount={discount} image={image} input={input} colour={colour} category={category} rules={rules} size={size} heading={heading} stock={stock} price={price}/>
-                </div>
-              ))}
+        <div className='grid grid col-span-12 lg:col-span-4 mt-5 px-5'>
+         <h1 className='font-bold text-lg font-bold py-3'>Top Up</h1>
+
+         {
+            data.map(({id,discount,image,colour,input,size,heading,stock,price,rules,category,rating})=>{
+              return <div key={uuidv4()} className='grid  py-2 border-b rounded mr-4'>
+                    <AllItemCard id={id}  discount={discount} image={image} input={input} colour={colour} category={category} rules={rules} size={size} heading={heading} stock={stock} price={price}/>
+              </div>
+        
+            })
+          }
         </div>
+        <div className='grid grid col-span-12 lg:col-span-4 mt-5 px-4'>
+         <h1 className='font-bold text-lg py-3'>Smart Watch</h1>
+
+        <div>
+        {
+            data.map(({id,discount,image,colour,input,size,heading,stock,price,rules,category,rating})=>{
+              return <div key={uuidv4()} className='grid  py-2 border-b rounded mr-4'>
+                    <AllItemCard id={id}  discount={discount} image={image} input={input} colour={colour} category={category} rules={rules} size={size} heading={heading} stock={stock} price={price}/>
+              </div>
+        
+            })
+          }
+        </div>
+        </div>
+      </div>
     </div>
   )
 }
 
-export default Practice
+export default AllItems

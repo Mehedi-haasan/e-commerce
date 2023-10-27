@@ -25,14 +25,14 @@ const [values, setValues]=useState({
       axios.defaults.withCredentials = true
       const handleSubmit =(e)=>{
         e.preventDefault();
-        axios.post('http://localhost:5500/user/register',values)
+        axios.post('http://localhost:5000/user/register',values)
         .then(res=> {
-          if(res.data.Status === "Success"){
+          if(res.data === "Registration Successfull"){
             toast(res.data)
             dispatch(loggedIn())
             goToHome("/")
           }
-          else if(res.data.Message === "Email already exist"){
+          else if(res.data === "Email already exist"){
             setErrorMessage(res.data)
           }else{
             setErrorMessage(res.data);
