@@ -1,12 +1,8 @@
- require('dotenv').config();
- const client = require('./src/Config/db');
- const app = require('./App');
- const PORT = process.env.SERVER_PORT || 5000;
- const cors=require('cors');
+require('dotenv').config();
+const app = require('./src/app');
 
- 
-app.listen(PORT, async()=>{
-    console.log(`Server is running at http://localhost:${PORT}`);
-     client.connect();
-
-})
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});

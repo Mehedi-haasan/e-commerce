@@ -60,37 +60,3 @@ const uploadMiddleware = (req, res, next) => {
 };
 
 module.exports = uploadMiddleware;
-
-
-
-
-// const uploadImage = async(e)=>{
-//     const file = e.target.files[0];
-//     const base64 = await convertBase64(file);
-//     setImage2(base64)
-   
-//  }
-
-           {/* <div className='ml-[2%] my-2'>
-           <h1 className=' font-semibold'>Image of product</h1>
-            
-            <div className='flex mt-1'>
-       
-             <input type='file'  multiple onChange={(e)=>{uploadImage(e)}}  className='p-2 border focus:outline-none rounded-l'/>
-             <button onClick={handleImage} className='px-6 py-1 border rounded-r bg-[#06D889]'><Icon icon="mingcute:arrow-right-fill" width="22px" className='text-white'/></button>
-           </div>
-          </div> */}
-
-//  const convertBase64 =(file)=>{
-//   return new Promise((resolve,reject)=>{
-//     const fileReader = new FileReader();
-//     fileReader.readAsDataURL(file);
-//     fileReader.onload =()=>{
-//       resolve(fileReader.result);
-//     }
-//     fileReader.onerror = (error)=>{
-//       reject(error);
-//     }
-//   })
-// }
-
