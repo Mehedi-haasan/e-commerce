@@ -28,7 +28,7 @@ exports.getProductCategories = async (req, res) => {
             });
         }
 
-        res.status(200).send({ success: true, items: carouselItems });
+        res.status(200).send({ success: true, items: items });
     } catch (err) {
         res.status(500).send({ success: false, message: err.message });
     }

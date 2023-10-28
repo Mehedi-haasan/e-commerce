@@ -366,7 +366,6 @@ exports.updateProduct = (req, res) => {
         });
 };
 
-
 exports.deleteProduct = (req, res) => {
     const body = req.body;
     if (!body.id) {
