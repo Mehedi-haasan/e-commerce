@@ -127,10 +127,15 @@ exports.updateCartItem = async (req, res) => {
         });
     }
 
-    SaleOrderLine.update({
+    var values = {
         product_qty: body.product_qty,
         subtotal: orderLine.price_unit * body.product_qty
-    }, {
+    }
+    if (body.custom_values) {
+        values.custom_values = body.custom_values;
+    }
+
+    SaleOrderLine.update(values, {
         where: {
             id: body.line_id,
             user_id: req.userId
