@@ -1,5 +1,6 @@
 const db = require("../models");
 const ProductCategory = db.productCategory;
+const ProductTemplate = db.productTemplate;
 
 
 exports.getProductCategories = async (req, res) => {
@@ -25,6 +26,51 @@ exports.getProductCategories = async (req, res) => {
                 id: item.id,
                 name: item.name,
                 imageUrl: item.image_url,
+            });
+        }
+
+        res.status(200).send({ success: true, items: items });
+    } catch (err) {
+        res.status(500).send({ success: false, message: err.message });
+    }
+};
+
+exports.getProductByCategories = async (req, res) => {
+
+    try {
+        const result = await ProductCategory.findAll({
+            where: {
+                active: true
+            },
+            include: [ProductTemplate],
+        });
+
+        if (!result) {
+            return res.status(200).send({
+                success: true,
+                message: "No record found."
+            });
+        }
+
+        var items = [];
+        for (let i = 0; i < result.length; i++) {
+            const item = result[i];
+            items.push({
+                id: item.id,
+                name: item.name,
+                imageUrl: item.image_url,
+                products: item.product_templates.map((templateItem) => {
+                    return {
+                        id: templateItem.id,
+                        name: templateItem.name,
+                        rating: 5,
+                        stockStatus: 'available',
+                        sequence: templateItem.sequence,
+                        imageUrl: templateItem.image_url,
+                        sku: templateItem.sku,
+                        price: templateItem.price,
+                    }
+                }),
             });
         }
 

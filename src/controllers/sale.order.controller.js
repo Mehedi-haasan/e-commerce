@@ -9,7 +9,6 @@ exports.getOrders = async (req, res) => {
     try {
         const result = await SaleOrder.findAll({
             where: {
-                active: true,
                 user_id: req.userId,
                 status: {
                     [Op.or]: ["draft", "confirmed", "done"]

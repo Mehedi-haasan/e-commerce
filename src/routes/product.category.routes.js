@@ -14,6 +14,10 @@ module.exports = function (app) {
         "/api/product/categories",
         controller.getProductCategories
     );
+    app.get(
+        "/api/category/products",
+        controller.getProductByCategories
+    );
 
     app.post(
         "/api/product/category",
