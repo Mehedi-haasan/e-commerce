@@ -11,7 +11,7 @@ exports.getCarousels = (req, res) => {
             if (!carousel) {
                 return res.status(204).send({
                     success: true,
-                    message: "No carousel found."
+                    message: "No record found."
                 });
             }
 
@@ -26,10 +26,10 @@ exports.getCarousels = (req, res) => {
                 });
             }
 
-            res.status(200).send(carouselItems);
+            res.status(200).send({ success: true, items: carouselItems });
         })
         .catch(err => {
-            res.status(500).send({ message: err.message });
+            res.status(500).send({ success: false, message: err.message });
         });
 };
 
@@ -38,7 +38,7 @@ exports.createCarousel = (req, res) => {
     if (!body.name || !body.imageUrl) {
         return res.status(400).send({
             success: false,
-            message: "Please provide carousel name and image url."
+            message: "Request body cannot be empty."
         });
     }
 
@@ -48,10 +48,10 @@ exports.createCarousel = (req, res) => {
         name: req.body.name,
         image_url: req.body.imageUrl,
     })
-        .then(ok => {
+        .then(_ => {
             res.send({
                 success: true,
-                message: "New Carousel successfully!"
+                message: "Record created successfully!"
             });
         })
         .catch(err => {
@@ -64,7 +64,7 @@ exports.updateCarousel = (req, res) => {
     if (!body.id) {
         return res.status(204).send({
             success: false,
-            message: "Please provide values to update carousel."
+            message: "Request body cannot be empty."
         });
     }
 
@@ -104,7 +104,7 @@ exports.deleteCarousel = (req, res) => {
     if (!body.id) {
         return res.status(204).send({
             success: false,
-            message: "Please provide values to update carousel."
+            message: "Request body cannot be empty."
         });
     }
 
@@ -113,7 +113,7 @@ exports.deleteCarousel = (req, res) => {
             id: body.id
         }
     })
-        .then(carousel => {
+        .then(_ => {
             res.send({
                 success: true,
                 message: "Record deleted successfully!"

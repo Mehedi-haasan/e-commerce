@@ -55,6 +55,14 @@ db.productTemplate.hasMany(db.productTemplateAttribute, {
   foreignKey: "tmpl_id"
 })
 
+db.productTemplate.belongsTo(db.productCategory, {
+  foreignKey: "category_id"
+})
+db.productCategory.hasMany(db.productTemplate, {
+  foreignKey: "category_id"
+})
+
+
 db.productAttribute.belongsTo(db.productTemplateAttribute, {
   foreignKey: "attr_id"
 })
