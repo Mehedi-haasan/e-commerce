@@ -240,11 +240,30 @@ exports.getProductVariants = async (req, res) => {
 
     try {
         const productVariantsQuery = `
-        select pp.id, pp.name as variant_name, pp.description, pvav.id as variant_line_id, pa.id as attr_id, pa.name, pa.display_type, pav.id as value_id, pav.value 
+        select 
+            pp.id, 
+            pp.sequence, 
+            pp.name as variant_name, 
+            pp.image_url, 
+            pp.description, 
+            pp.price,
+            pp.sku, 
+            pp.category_id,
+            pc.name as category_name,
+            pp.template_id, 
+            pt.name as template_name, 
+            pvav.id as variant_line_id, 
+            pa.id as attr_id, 
+            pa.name, 
+            pa.display_type, 
+            pav.id as value_id, 
+            pav.value 
         from product_products as pp 
-        left join product_variant_attribute_values pvav on pvav.variant_id=pp.id 
-        left join product_attributes pa on pa.id=pvav.attr_id 
-        left join product_attribute_values pav on pav.id=pvav.attr_value_id 
+            left join product_templates pt on pt.id=pp.template_id 
+            left join product_categories pc on pc.id=pp.category_id 
+            left join product_variant_attribute_values pvav on pvav.variant_id=pp.id 
+            left join product_attributes pa on pa.id=pvav.attr_id 
+            left join product_attribute_values pav on pav.id=pvav.attr_value_id 
         where pp.template_id=:template_id
         order by pp.id;        
         `
@@ -267,9 +286,21 @@ exports.getProductVariants = async (req, res) => {
 
             if (!result[id]) {
                 result[id] = {
-                    id,
+                    id:item.id,
+                    sequence:item.sequence,
                     name: item.variant_name,
                     description: item.description,
+                    price: item.price,
+                    imageUrl:item.image_url,
+                    sku:item.sku,
+                    template: {
+                        id:item.template_id,
+                        name:item.template_name,
+                    },
+                    category:{
+                        id:item.category_id,
+                        name:item.category_name,
+                    },
                     attributes: [],
                     customFields: [],
                     ratings: [],
@@ -346,8 +377,8 @@ exports.updateProduct = (req, res) => {
     if (body.name) {
         values.name = body.name;
     }
-    if (body.imageUrl) {
-        values.image_url = body.imageUrl;
+    if (body.image_url) {
+        values.image_url = body.image_url;
     }
 
     ProductTemplate.update(values, {
@@ -365,6 +396,65 @@ exports.updateProduct = (req, res) => {
             res.status(500).send({ success: false, message: err.message });
         });
 };
+
+
+exports.updateProductVariant = (req, res) => {
+    const body = req.body;
+    if (!body.id) {
+        return res.status(204).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+    }
+
+    var values = {};
+    if (body.active) {
+        values.active = body.active;
+    }
+    if (body.sequence) {
+        values.sequence = body.sequence;
+    }
+    if (body.name) {
+        values.name = body.name;
+    }
+    if (body.image_url) {
+        values.image_url = body.image_url;
+    }
+    if (body.sequence) {
+        values.sequence = body.sequence;
+    }
+    if (body.price) {
+        values.price = body.price;
+    }
+    if (body.standard_price) {
+        values.standard_price = body.standard_price;
+    }
+    if (body.sku) {
+        values.sku = body.sku;
+    }
+    if (body.description) {
+        values.description = body.description;
+    }
+    if (body.category_id) {
+        values.category_id = body.category_id;
+    }
+
+    ProductVariant.update(values, {
+        where: {
+            id: body.id
+        }
+    })
+        .then(_ => {
+            res.send({
+                success: true,
+                message: "Record updated successfully!"
+            });
+        })
+        .catch(err => {
+            res.status(500).send({ success: false, message: err.message });
+        });
+};
+
 
 exports.deleteProduct = (req, res) => {
     const body = req.body;

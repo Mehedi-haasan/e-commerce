@@ -38,6 +38,12 @@ module.exports = function (app) {
         controller.updateProduct
     );
 
+    app.put(
+        "/api/product-variant",
+        [authJwt.verifyToken],
+        controller.updateProductVariant
+    );
+
     app.delete(
         "/api/product",
         [authJwt.verifyToken],
