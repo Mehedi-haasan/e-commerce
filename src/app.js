@@ -33,6 +33,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
+require('./routes/product.attribute.routes')(app);
+require('./routes/product.category.routes')(app);
 require('./routes/carousel.routes')(app);
 require('./routes/product.template.routes')(app);
 require('./routes/sale.order.routes')(app);

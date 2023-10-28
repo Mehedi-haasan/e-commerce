@@ -1,30 +1,30 @@
 const db = require("../models");
-const Carousel = db.carousel;
+const ProductCategory = db.productCategory;
 
-exports.getCarousels = async (req, res) => {
+
+exports.getProductCategories = async (req, res) => {
 
     try {
-        const result = await Carousel.findAll({
+        const result = await ProductCategory.findAll({
             where: {
                 active: true
             }
         });
 
         if (!result) {
-            return res.status(204).send({
+            return res.status(200).send({
                 success: true,
                 message: "No record found."
             });
         }
 
-        var carouselItems = [];
+        var items = [];
         for (let i = 0; i < result.length; i++) {
-            const carouselItem = result[i];
-            carouselItems.push({
-                id: carouselItem.id,
-                name: carouselItem.name,
-                sequence: carouselItem.sequence,
-                imageUrl: carouselItem.image_url,
+            const item = result[i];
+            items.push({
+                id: item.id,
+                name: item.name,
+                imageUrl: item.image_url,
             });
         }
 
@@ -34,7 +34,7 @@ exports.getCarousels = async (req, res) => {
     }
 };
 
-exports.createCarousel = async (req, res) => {
+exports.createProductCategory = async (req, res) => {
     const body = req.body;
     if (!body.name || !body.imageUrl) {
         return res.status(400).send({
@@ -44,9 +44,8 @@ exports.createCarousel = async (req, res) => {
     }
 
     try {
-        await Carousel.create({
+        await ProductCategory.create({
             active: req.body.active || true,
-            sequence: req.body.sequence || 10,
             name: req.body.name,
             image_url: req.body.imageUrl,
         });
@@ -60,7 +59,7 @@ exports.createCarousel = async (req, res) => {
     }
 };
 
-exports.updateCarousel = async (req, res) => {
+exports.updateProductCategory = async (req, res) => {
     const body = req.body;
     if (!body.id) {
         return res.status(204).send({
@@ -73,9 +72,6 @@ exports.updateCarousel = async (req, res) => {
     if (body.active) {
         values.active = body.active;
     }
-    if (body.sequence) {
-        values.sequence = body.sequence;
-    }
     if (body.name) {
         values.name = body.name;
     }
@@ -84,7 +80,7 @@ exports.updateCarousel = async (req, res) => {
     }
 
     try {
-        await Carousel.update(values, {
+        await ProductCategory.update(values, {
             where: {
                 id: body.id
             }
@@ -100,7 +96,7 @@ exports.updateCarousel = async (req, res) => {
 };
 
 
-exports.deleteCarousel = async (req, res) => {
+exports.deleteProductCategory = async (req, res) => {
     const body = req.body;
     if (!body.id) {
         return res.status(204).send({
@@ -110,7 +106,7 @@ exports.deleteCarousel = async (req, res) => {
     }
 
     try {
-        await Carousel.destroy({
+        await ProductCategory.destroy({
             where: {
                 id: body.id
             }
