@@ -36,7 +36,7 @@ exports.getProductCategories = async (req, res) => {
 
 exports.createProductCategory = async (req, res) => {
     const body = req.body;
-    if (!body.name || !body.imageUrl) {
+    if (!body.name || !body.image_url) {
         return res.status(400).send({
             success: false,
             message: "Request body cannot be empty."
@@ -47,7 +47,7 @@ exports.createProductCategory = async (req, res) => {
         await ProductCategory.create({
             active: req.body.active || true,
             name: req.body.name,
-            image_url: req.body.imageUrl,
+            image_url: req.body.image_url,
         });
 
         res.send({
@@ -75,8 +75,8 @@ exports.updateProductCategory = async (req, res) => {
     if (body.name) {
         values.name = body.name;
     }
-    if (body.imageUrl) {
-        values.image_url = body.imageUrl;
+    if (body.image_url) {
+        values.image_url = body.image_url;
     }
 
     try {
