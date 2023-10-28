@@ -4,6 +4,8 @@ const ProductTemplate = db.productTemplate;
 const ProductCategory = db.productCategory;
 const ProductTemplateAttribute = db.productTemplateAttribute;
 const ProductTemplateAttributeValue = db.productTemplateAttributeValue;
+const ProductAttribute = db.productAttribute;
+const ProductAttributeValue = db.productAttributeValue;
 const ProductVariant = db.productVariant;
 const ProductVariantAttributeValue = db.productVariantAttributeValue;
 
@@ -150,7 +152,7 @@ exports.createProduct = async (req, res) => {
         }
 
         // create product variant attribute values
-        const variantItems = ProductVariant.bulkCreate(variants);
+        const variantItems = await ProductVariant.bulkCreate(variants);
         var variantAttributeValues = [];
         for (let i = 0; i < variantItems.length; i++) {
             const variantItem = variantItems[i];
@@ -176,6 +178,53 @@ exports.createProduct = async (req, res) => {
         });
     } catch (err) {
         await transaction.rollback();
+        res.status(500).send({ success: false, message: err.message });
+    }
+};
+
+exports.getProductVariants = async (req, res) => {
+    const params = req.params;
+    if (!params.templateId) {
+        return res.status(204).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+    }
+
+    try {
+        const rawQuery = `
+        select pp.id, pp.name,pvav.id as variant_line_id, pa.name, pav.id as variant_id, pav.value 
+        from product_products as pp 
+        left join product_variant_attribute_values pvav on pvav.variant_id=pp.id 
+        left join product_attributes pa on pa.id=pvav.attr_id 
+        left join product_attribute_values pav on pav.id=pvav.attr_value_id 
+        where pp.template_id=:template_id
+        order by pp.id;        
+        `
+
+        const data = await sequelize.query(
+            rawQuery,
+            {
+                replacements: { template_id: params.templateId },
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        // Grouping the data by variant_id
+        const groupedData = data.reduce((result, item) => {
+            const { id } = item;
+
+            if (!result[id]) {
+                result[id] = [];
+            }
+
+            result[id].push(item);
+
+            return result;
+        }, {});
+
+        res.status(200).send({ success: true, items: groupedData });
+    } catch (err) {
         res.status(500).send({ success: false, message: err.message });
     }
 };

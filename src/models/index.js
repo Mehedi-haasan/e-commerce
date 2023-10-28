@@ -80,7 +80,9 @@ db.productTemplateAttribute.hasMany(db.productVariant, {
 db.productVariant.belongsTo(db.productTemplate, {
   foreignKey: 'template_id'
 })
-
+db.productTemplate.hasMany(db.productVariant, {
+  foreignKey: 'template_id'
+})
 
 db.productVariantAttributeValue.belongsTo(db.productVariant, {
   foreignKey: "variant_id"
@@ -89,6 +91,19 @@ db.productVariant.hasMany(db.productVariantAttributeValue, {
   foreignKey: "variant_id"
 })
 
+db.productAttribute.belongsTo(db.productVariantAttributeValue, {
+  foreignKey: "attr_id"
+})
+db.productVariantAttributeValue.hasMany(db.productAttribute, {
+  foreignKey: "attr_id"
+})
+
+db.productAttributeValue.belongsTo(db.productVariantAttributeValue, {
+  foreignKey: "attr_value_id"
+})
+db.productVariantAttributeValue.hasMany(db.productAttributeValue, {
+  foreignKey: "attr_value_id"
+})
 
 db.ROLES = ["user", "admin", "moderator"];
 

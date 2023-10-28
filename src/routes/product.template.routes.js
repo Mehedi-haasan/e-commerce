@@ -12,6 +12,8 @@ module.exports = function (app) {
 
     app.get("/api/products", controller.getProducts);
 
+    app.get("/api/product/:templateId", controller.getProductVariants);
+
     app.post(
         "/api/product",
         [authJwt.verifyToken],
