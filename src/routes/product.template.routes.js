@@ -20,6 +20,18 @@ module.exports = function (app) {
         controller.createProduct
     );
 
+    app.post(
+        "/api/product/custom-fields",
+        [authJwt.verifyToken],
+        controller.createVariantCustomFields
+    );
+
+    app.post(
+        "/api/product/feedback",
+        [authJwt.verifyToken],
+        controller.createCustomerFeedback
+    );
+
     app.put(
         "/api/product",
         [authJwt.verifyToken],

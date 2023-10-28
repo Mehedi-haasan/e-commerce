@@ -25,6 +25,8 @@ db.sequelize = sequelize;
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.carousel = require("./shop.carousel.js")(sequelize, Sequelize);
+
+// product and variants
 db.productCategory = require("./shop.product.category.js")(sequelize, Sequelize);
 db.productTemplate = require("./shop.product.template.js")(sequelize, Sequelize);
 db.productAttribute = require("./shop.product.attribute.js")(sequelize, Sequelize);
@@ -33,6 +35,16 @@ db.productTemplateAttribute = require("./shop.product.template.attribute.js")(se
 db.productTemplateAttributeValue = require("./shop.product.template.attribute.values.js")(sequelize, Sequelize);
 db.productVariant = require("./shop.product.product.js")(sequelize, Sequelize);
 db.productVariantAttributeValue = require("./shop.product.variant.attribute.values.js")(sequelize, Sequelize);
+db.productCustomFields = require("./shop.product.custom.fields.js")(sequelize, Sequelize);
+
+// order and delivery
+db.saleOrder = require("./order.sale.order.js")(sequelize, Sequelize);
+db.saleOrderLine = require("./order.sale.order.line.js")(sequelize, Sequelize);
+
+db.customerFeedback = require("./order.customer.feedback.js")(sequelize, Sequelize);
+
+
+// relations between tables
 
 db.role.belongsToMany(db.user, {
   through: "user_roles"
@@ -103,6 +115,48 @@ db.productAttributeValue.belongsTo(db.productVariantAttributeValue, {
 })
 db.productVariantAttributeValue.hasMany(db.productAttributeValue, {
   foreignKey: "attr_value_id"
+})
+
+db.productCustomFields.belongsTo(db.productVariant, {
+  foreignKey: "variant_id"
+})
+db.productVariant.hasMany(db.productCustomFields, {
+  foreignKey: "variant_id"
+})
+
+db.saleOrderLine.belongsTo(db.saleOrder, {
+  foreignKey: "order_id"
+})
+db.saleOrder.hasMany(db.saleOrderLine, {
+  foreignKey: "order_id"
+})
+
+db.user.hasMany(db.saleOrder, {
+  foreignKey: "user_id"
+})
+db.saleOrder.belongsTo(db.user, {
+  foreignKey: "user_id"
+})
+
+db.saleOrderLine.belongsTo(db.productVariant, {
+  foreignKey: "variant_id"
+})
+db.productVariant.hasMany(db.saleOrderLine, {
+  foreignKey: "variant_id"
+})
+
+db.saleOrderLine.belongsTo(db.user, {
+  foreignKey: "user_id"
+})
+db.user.hasMany(db.saleOrderLine, {
+  foreignKey: "user_id"
+})
+
+db.customerFeedback.belongsTo(db.saleOrder, {
+  foreignKey: "order_id"
+})
+db.saleOrder.hasMany(db.customerFeedback, {
+  foreignKey: "order_id"
 })
 
 db.ROLES = ["user", "admin", "moderator"];

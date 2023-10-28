@@ -4,10 +4,11 @@ const ProductTemplate = db.productTemplate;
 const ProductCategory = db.productCategory;
 const ProductTemplateAttribute = db.productTemplateAttribute;
 const ProductTemplateAttributeValue = db.productTemplateAttributeValue;
-const ProductAttribute = db.productAttribute;
-const ProductAttributeValue = db.productAttributeValue;
 const ProductVariant = db.productVariant;
 const ProductVariantAttributeValue = db.productVariantAttributeValue;
+
+const ProductCustomFields = db.productCustomFields;
+const CustomerFeedback = db.customerFeedback;
 
 exports.getProducts = (req, res) => {
     var params = {
@@ -182,6 +183,52 @@ exports.createProduct = async (req, res) => {
     }
 };
 
+exports.createVariantCustomFields = async (req, res) => {
+    const body = req.body;
+    if (!body) {
+        return res.status(400).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+
+    }
+
+    ProductCustomFields.create(req.body)
+        .then(data => {
+            res.send({
+                success: true,
+                message: "Record Created successfully!"
+            });
+        })
+        .catch(err => {
+            res.status(500).send({ success: false, message: err.message });
+        });
+
+};
+
+exports.createCustomerFeedback = async (req, res) => {
+    const body = req.body;
+    if (!body) {
+        return res.status(400).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+
+    }
+
+    CustomerFeedback.create(req.body)
+        .then(data => {
+            res.send({
+                success: true,
+                message: "Record Created successfully!"
+            });
+        })
+        .catch(err => {
+            res.status(500).send({ success: false, message: err.message });
+        });
+
+};
+
 exports.getProductVariants = async (req, res) => {
     const params = req.params;
     if (!params.templateId) {
@@ -192,8 +239,8 @@ exports.getProductVariants = async (req, res) => {
     }
 
     try {
-        const rawQuery = `
-        select pp.id, pp.name,pvav.id as variant_line_id, pa.name, pav.id as variant_id, pav.value 
+        const productVariantsQuery = `
+        select pp.id, pp.name as variant_name, pp.description, pvav.id as variant_line_id, pa.id as attr_id, pa.name, pa.display_type, pav.id as value_id, pav.value 
         from product_products as pp 
         left join product_variant_attribute_values pvav on pvav.variant_id=pp.id 
         left join product_attributes pa on pa.id=pvav.attr_id 
@@ -202,8 +249,12 @@ exports.getProductVariants = async (req, res) => {
         order by pp.id;        
         `
 
+        const variantCustomFieldsQuery = `select name, is_required, placeholder, input_type, variant_id from product_custom_fields where variant_id in (:variant_ids);`
+
+        const variantRatingsQuery = `select variant_id, avg(rating) as rating_avg from customer_feedbacks where variant_id in (:variant_ids) group by variant_id;`
+
         const data = await sequelize.query(
-            rawQuery,
+            productVariantsQuery,
             {
                 replacements: { template_id: params.templateId },
                 type: sequelize.QueryTypes.SELECT
@@ -215,13 +266,60 @@ exports.getProductVariants = async (req, res) => {
             const { id } = item;
 
             if (!result[id]) {
-                result[id] = [];
+                result[id] = {
+                    id,
+                    name: item.variant_name,
+                    description: item.description,
+                    attributes: [],
+                    customFields: [],
+                    ratings: [],
+                };
             }
 
-            result[id].push(item);
+            result[id].attributes.push({
+                attr_id: item.attr_id,
+                name: item.name,
+                display_type: item.display_type,
+                value_id: item.value_id,
+                value: item.value,
+            });
 
             return result;
         }, {});
+
+        // Get ratings for each variant
+        const variantIds = Object.keys(groupedData);
+        const customFields = await sequelize.query(
+            variantCustomFieldsQuery,
+            {
+                replacements: { variant_ids: variantIds },
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        const ratings = await sequelize.query(
+            variantRatingsQuery,
+            {
+                replacements: { variant_ids: variantIds },
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        // Add custom fields to each variant
+        for (let i = 0; i < customFields.length; i++) {
+            const customField = customFields[i];
+            const variantId = customField.variant_id;
+            const variant = groupedData[variantId];
+            variant.customFields.push(customField);
+        }
+
+        // Add ratings to each variant
+        for (let i = 0; i < ratings.length; i++) {
+            const rating = ratings[i];
+            const variantId = rating.variant_id;
+            const variant = groupedData[variantId];
+            variant.ratings.push(rating);
+        }
 
         res.status(200).send({ success: true, items: groupedData });
     } catch (err) {
