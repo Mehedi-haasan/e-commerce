@@ -4,7 +4,7 @@
 		"name": "mahlun.com",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17684729",
-		"_collection_link": "https://mazharulsabbir-api.postman.co/workspace/My-Workspace~05a8718a-a603-4ebf-8d3b-b09d8e3b2ce7/collection/17684729-a95c114a-e5aa-4065-bf7a-17c4b45884a2?action=share&source=collection_link&creator=17684729"
+		"_collection_link": "https://mazharulsabbir-api.postman.co/workspace/My-Workspace~05a8718a-a603-4ebf-8d3b-b09d8e3b2ce7/collection/17684729-a95c114a-e5aa-4065-bf7a-17c4b45884a2?source=collection_link"
 	},
 	"item": [
 		{
@@ -331,6 +331,51 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "PUT: Update Product Template",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/product",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Update Product Variant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":6,\n    \"price\":800\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product-variant",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product-variant"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -407,6 +452,294 @@
 								"api",
 								"cart",
 								"update-item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET: Order History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/order/history",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Attributes",
+			"item": [
+				{
+					"name": "GET: Attributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/product/attributes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST: Create Attribute",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Subscription\",\n    \"display_type\":\"selection\",\n    \"attr_values\":[\n        {\n            \"active\":true,\n            \"value\":\"1 Month\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"3 Month\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"6 Month\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"1 Year\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/attribute",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"attribute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Attribute Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/attribute",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"attribute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Attribute Value Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"value\": \"white\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/attribute/value",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"attribute",
+								"value"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE: Attribute",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/attribute/:attributeId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"attribute",
+								":attributeId"
+							],
+							"variable": [
+								{
+									"key": "attributeId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE: Attribute Value",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/attribute/value/:attributeValueId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"attribute",
+								"value",
+								":attributeValueId"
+							],
+							"variable": [
+								{
+									"key": "attributeValueId",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Category",
+			"item": [
+				{
+					"name": "GET: Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/product/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST: Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"TV Series\",\n    \"image_url\":\"/tv/series/images\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":1,\n    \"name\":\"Subscriptions New Name\",\n    \"image_url\":\"new image url/jsdg/\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET: Products By Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/category/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"products"
 							]
 						}
 					},
