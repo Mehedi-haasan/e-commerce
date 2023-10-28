@@ -2,7 +2,8 @@ module.exports = (sequelize, Sequelize) => {
     const ProductTemplate = sequelize.define("product_template", {
         id: {
             type: Sequelize.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true,
         },
         active: {
             type: Sequelize.BOOLEAN,
@@ -10,8 +11,14 @@ module.exports = (sequelize, Sequelize) => {
         sequence: {
             type: Sequelize.INTEGER,
         },
+        category_id:{
+            type: Sequelize.INTEGER,
+        },
         name: {
             type: Sequelize.STRING
+        },
+        description:{
+            type: Sequelize.TEXT
         },
         image_url: {
             type: Sequelize.STRING
@@ -24,12 +31,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         sku:{
             type: Sequelize.STRING
-        },
-        description:{
-            type: Sequelize.TEXT
-        },
-        category_id:{
-            type: Sequelize.INTEGER,
         },
     });
 

@@ -2,7 +2,8 @@ module.exports = (sequelize, Sequelize) => {
     const ProductAttributeValue = sequelize.define("product_attribute_value", {
         id: {
             type: Sequelize.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true,
         },
         active: {
             type: Sequelize.BOOLEAN,
