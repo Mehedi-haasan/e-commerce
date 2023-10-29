@@ -146,10 +146,14 @@ exports.createProduct = async (req, res) => {
 
         // create product variants
         var variants = [];
+        var sequence = 10;
         for (let i = 0; i < variantCombinations.length; i++) {
             var myTemplateData = productBody;
             myTemplateData.template_id = template.id;
+            myTemplateData.sequence = sequence;
+            myTemplateData.sku = myTemplateData.sku + "-" + sequence;
             variants.push(myTemplateData);
+            sequence += 10;
         }
 
         // create product variant attribute values
@@ -339,8 +343,6 @@ exports.getProductVariants = async (req, res) => {
             return result;
         }, {});
 
-        console.log(attrCombinations)
-
         // Get ratings for each variant
         const variantIds = Object.keys(groupedData);
         const customFields = await sequelize.query(
@@ -404,16 +406,9 @@ exports.updateProduct = async (req, res) => {
         values.image_url = body.image_url;
     }
 
+    const transaction = await sequelize.transaction();
 
     try {
-
-        if (body.attributes) {
-            const variantCombinations = generateCombinations(body.attributes)
-            console.log(variantCombinations)
-            // remove existing combinations from variantCombinations
-            // then create new variants
-        }
-
         const template = await ProductTemplate.findOne({
             where: {
                 id: body.id
@@ -422,13 +417,114 @@ exports.updateProduct = async (req, res) => {
                 model: ProductTemplateAttribute,
             }]
         })
-        const x = await template.update(values);
+        await template.update(values);
+
+        if (body.attributes) {
+            // remove existing combinations from variantCombinations
+            // then create new variants
+            const productBody = {};
+            // const productBody = template.dataValues.copy();
+            Object.assign(productBody, template.dataValues)
+
+            // remove some auto generated values;
+            delete productBody.id;
+            delete productBody.createdAt;
+            delete productBody.updatedAt;
+
+            // remove product template attributes
+            delete productBody.product_template_attributes;
+
+            const variantCombinations = generateCombinations(body.attributes)
+            console.log("variantCombinations", variantCombinations)
+
+            const combinationsQuery = "select variant_id, attr_id, attr_value_id as value from product_variant_attribute_values where variant_id in (select id from product_products where template_id=:template_id and active=true);"
+            const existingVariantCombinations = await sequelize.query(
+                combinationsQuery,
+                {
+                    replacements: { template_id: template.id },
+                    type: sequelize.QueryTypes.SELECT
+                }
+            );
+
+            var variantsToRemove = [];
+            for (let i = 0; i < existingVariantCombinations.length; i++) {
+                const existingVariantCombination = existingVariantCombinations[i];
+                const matchedVariantCombination = variantCombinations.filter(item => item.attr_id == existingVariantCombination.attr_id && item.value == existingVariantCombination.value);
+                if (matchedVariantCombination.length == 0) {
+                    variantsToRemove.push(existingVariantCombination);
+                }
+            }
+
+            // check if already sale order generated with the product variant ids
+            const saleOrderQuery = "select count(*) from sale_order_lines where variant_id in (:variant_ids);"
+            const saleOrderLineLength = await sequelize.query(
+                saleOrderQuery,
+                {
+                    replacements: { variant_ids: variantsToRemove.map(item => item.variant_id) },
+                    type: sequelize.QueryTypes.SELECT
+                }
+            );
+
+            if (saleOrderLineLength > 0) {
+                await transaction.rollback();
+                return res.status(500).send({ success: false, message: "Cannot delete product variant. Already sale order generated with the product variant ids." });
+            }
+
+            // remove existing variants
+            await ProductVariantAttributeValue.destroy({
+                where: {
+                    variant_id: variantsToRemove.map(item => item.variant_id)
+                }
+            });
+
+            // remove product variants
+            await ProductVariant.destroy({
+                where: {
+                    id: variantsToRemove.map(item => item.variant_id)
+                }
+            });
+
+            // create product variants
+            var variants = [];
+            var sequence = 10;
+            for (let i = 0; i < variantCombinations.length; i++) {
+                var myTemplateData = productBody;
+                myTemplateData.template_id = template.id;
+                myTemplateData.sequence = sequence;
+                myTemplateData.sku = myTemplateData.sku + "-" + sequence;
+                variants.push(myTemplateData);
+
+                sequence += 10;
+            }
+
+            // create product variant attribute values
+            const variantItems = await ProductVariant.bulkCreate(variants);
+            var variantAttributeValues = [];
+            for (let i = 0; i < variantItems.length; i++) {
+                const variantItem = variantItems[i];
+                const variantCombination = variantCombinations[i];
+                variantCombination.forEach(combination => {
+                    variantAttributeValues.push({
+                        variant_id: variantItem.id,
+                        attr_value_id: combination.value,
+                        attr_id: combination.attr_id,
+                        active: true,
+                    });
+                });
+            }
+
+            await ProductVariantAttributeValue.bulkCreate(variantAttributeValues);
+        }
+
+        // commit transaction
+        await transaction.commit();
 
         res.send({
             success: true,
             message: "Record updated successfully!"
         });
     } catch (err) {
+        await transaction.rollback();
         res.status(500).send({ success: false, message: err.message });
     }
 
