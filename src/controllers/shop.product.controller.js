@@ -280,6 +280,8 @@ exports.getProductVariants = async (req, res) => {
             }
         );
 
+        var attrCombinations = {}
+
         // Grouping the data by variant_id
         const groupedData = data.reduce((result, item) => {
             const { id } = item;
@@ -315,8 +317,29 @@ exports.getProductVariants = async (req, res) => {
                 value: item.value,
             });
 
+            if (!attrCombinations[item.attr_id]) {
+                attrCombinations[item.attr_id] = {
+                    attr_id: item.attr_id,
+                    name: item.name,
+                    display_type: item.display_type,
+                    values: []
+                }
+            }
+
+            const variantUnique = {
+                value_id: item.value_id,
+                value: item.value,
+            };
+
+            const isAttrExists = attrCombinations[item.attr_id]['values'].some(el => el.value_id == item.value_id)
+            if (!isAttrExists) {
+                attrCombinations[item.attr_id]['values'].push(variantUnique)
+            }
+
             return result;
         }, {});
+
+        console.log(attrCombinations)
 
         // Get ratings for each variant
         const variantIds = Object.keys(groupedData);
@@ -352,7 +375,7 @@ exports.getProductVariants = async (req, res) => {
             variant.ratings.push(rating);
         }
 
-        res.status(200).send({ success: true, items: Object.values(groupedData) });
+        res.status(200).send({ success: true, combinations: Object.values(attrCombinations), items: Object.values(groupedData) });
     } catch (err) {
         res.status(500).send({ success: false, message: err.message });
     }
