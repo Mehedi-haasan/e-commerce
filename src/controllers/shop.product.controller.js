@@ -276,6 +276,12 @@ exports.getProductVariants = async (req, res) => {
 
         const variantRatingsQuery = `select variant_id, avg(rating) as rating_avg from customer_feedbacks where variant_id in (:variant_ids) group by variant_id;`
 
+        const variantAlternateProductQuery = `
+        select id, name, sequence, image_url, sku, price, pvap.productProductId as variant_id from product_templates pt 
+        left join product_variant_alternate_products pvap on pvap.productTemplateId = pt.id
+        where pvap.productProductId in (:variant_ids);
+        `
+
         const data = await sequelize.query(
             productVariantsQuery,
             {
@@ -310,6 +316,7 @@ exports.getProductVariants = async (req, res) => {
                     attributes: [],
                     customFields: [],
                     ratings: [],
+                    alternateProducts: [],
                 };
             }
 
@@ -345,6 +352,17 @@ exports.getProductVariants = async (req, res) => {
 
         // Get ratings for each variant
         const variantIds = Object.keys(groupedData);
+
+        // Get alternate products
+        const alternateProductTemplates = await sequelize.query(
+            variantAlternateProductQuery,
+            {
+                replacements: { variant_ids: variantIds },
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        // Get custom fields required for variant
         const customFields = await sequelize.query(
             variantCustomFieldsQuery,
             {
@@ -353,6 +371,7 @@ exports.getProductVariants = async (req, res) => {
             }
         );
 
+        // Get ratings for the variant
         const ratings = await sequelize.query(
             variantRatingsQuery,
             {
@@ -360,6 +379,14 @@ exports.getProductVariants = async (req, res) => {
                 type: sequelize.QueryTypes.SELECT
             }
         );
+
+        // Add alternate product templates to each variant
+        for (let i = 0; i < alternateProductTemplates.length; i++) {
+            const item = alternateProductTemplates[i];
+            const variantId = item.variant_id;
+            const variant = groupedData[variantId];
+            variant.alternateProducts.push(item);
+        }
 
         // Add custom fields to each variant
         for (let i = 0; i < customFields.length; i++) {
@@ -573,15 +600,45 @@ exports.updateProductVariant = async (req, res) => {
     }
 
     try {
-        const variant = await ProductVariant.update(values, {
+
+        const variant = await ProductVariant.findOne({
             where: {
                 id: body.id
-            }
+            },
+            include: [ProductVariantAttributeValue]
         });
+
+        await variant.update(values);
 
         if (body.alternate_products) {
             // remove all existing alternate products
-            await variant.setProduct_variant_alternate_variants(body.alternate_products)
+            const alternateProductTmplQuery = "delete from product_variant_alternate_products where productProductId in (:variant_ids) and productTemplateId not in (:template_ids)"
+            await sequelize.query(
+                alternateProductTmplQuery,
+                {
+                    replacements: { variant_ids: [variant.id], template_ids: body.alternate_products },
+                    type: sequelize.QueryTypes.DELETE
+                }
+            );
+
+            // add new alternate products
+            const alternateProductTmplQuery2 = "insert into product_variant_alternate_products (productProductId, productTemplateId, createdAt, updatedAt) values (:variant_id, :template_id, :create_date, :write_date)"
+            for (let i = 0; i < body.alternate_products.length; i++) {
+                const templateId = body.alternate_products[i];
+
+                await sequelize.query(
+                    alternateProductTmplQuery2,
+                    {
+                        replacements: {
+                            variant_id: variant.id,
+                            template_id: templateId,
+                            create_date: new Date(),
+                            write_date: new Date(),
+                        },
+                        type: sequelize.QueryTypes.INSERT
+                    }
+                );
+            }
         }
 
         res.send({
