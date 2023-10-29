@@ -37,10 +37,18 @@ db.productVariant = require("./shop.product.product.js")(sequelize, Sequelize);
 db.productVariantAttributeValue = require("./shop.product.variant.attribute.values.js")(sequelize, Sequelize);
 db.productCustomFields = require("./shop.product.custom.fields.js")(sequelize, Sequelize);
 
+// alternate products suggestions
+// db.productAlternateProduct = require("./shop.product.alternate.product.js")(sequelize, Sequelize);
+
+// product campaign
+db.productCampaign = require("./shop.product.campaign.js")(sequelize, Sequelize);
+db.productCampaignLine = require("./shop.product.campaign.line.js")(sequelize, Sequelize);
+
 // order and delivery
 db.saleOrder = require("./order.sale.order.js")(sequelize, Sequelize);
 db.saleOrderLine = require("./order.sale.order.line.js")(sequelize, Sequelize);
 
+// ratings and reviews
 db.customerFeedback = require("./order.customer.feedback.js")(sequelize, Sequelize);
 
 
@@ -122,6 +130,21 @@ db.productCustomFields.belongsTo(db.productVariant, {
 })
 db.productVariant.hasMany(db.productCustomFields, {
   foreignKey: "variant_id"
+})
+
+// a variant can have multiple alternate product templates
+db.productVariant.belongsToMany(db.productTemplate, {
+  through: "product_variant_alternate_products"
+})
+db.productTemplate.belongsToMany(db.productVariant, {
+  through: "product_variant_alternate_products"
+})
+
+db.productCampaignLine.belongsTo(db.productCampaign, {
+  foreignKey: "campaign_id"
+})
+db.productCampaign.hasMany(db.productCampaignLine, {
+  foreignKey: "campaign_id"
 })
 
 db.saleOrderLine.belongsTo(db.saleOrder, {

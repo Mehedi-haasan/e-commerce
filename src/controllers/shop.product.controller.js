@@ -286,20 +286,20 @@ exports.getProductVariants = async (req, res) => {
 
             if (!result[id]) {
                 result[id] = {
-                    id:item.id,
-                    sequence:item.sequence,
+                    id: item.id,
+                    sequence: item.sequence,
                     name: item.variant_name,
                     description: item.description,
                     price: item.price,
-                    imageUrl:item.image_url,
-                    sku:item.sku,
+                    imageUrl: item.image_url,
+                    sku: item.sku,
                     template: {
-                        id:item.template_id,
-                        name:item.template_name,
+                        id: item.template_id,
+                        name: item.template_name,
                     },
-                    category:{
-                        id:item.category_id,
-                        name:item.category_name,
+                    category: {
+                        id: item.category_id,
+                        name: item.category_name,
                     },
                     attributes: [],
                     customFields: [],
@@ -352,13 +352,13 @@ exports.getProductVariants = async (req, res) => {
             variant.ratings.push(rating);
         }
 
-        res.status(200).send({ success: true, items: groupedData });
+        res.status(200).send({ success: true, items: Object.values(groupedData) });
     } catch (err) {
         res.status(500).send({ success: false, message: err.message });
     }
 };
 
-exports.updateProduct = (req, res) => {
+exports.updateProduct = async (req, res) => {
     const body = req.body;
     if (!body.id) {
         return res.status(204).send({
@@ -381,24 +381,38 @@ exports.updateProduct = (req, res) => {
         values.image_url = body.image_url;
     }
 
-    ProductTemplate.update(values, {
-        where: {
-            id: body.id
+
+    try {
+
+        if (body.attributes) {
+            const variantCombinations = generateCombinations(body.attributes)
+            console.log(variantCombinations)
+            // remove existing combinations from variantCombinations
+            // then create new variants
         }
-    })
-        .then(_ => {
-            res.send({
-                success: true,
-                message: "Record updated successfully!"
-            });
+
+        const template = await ProductTemplate.findOne({
+            where: {
+                id: body.id
+            },
+            include: [{
+                model: ProductTemplateAttribute,
+            }]
         })
-        .catch(err => {
-            res.status(500).send({ success: false, message: err.message });
+        const x = await template.update(values);
+
+        res.send({
+            success: true,
+            message: "Record updated successfully!"
         });
+    } catch (err) {
+        res.status(500).send({ success: false, message: err.message });
+    }
+
 };
 
 
-exports.updateProductVariant = (req, res) => {
+exports.updateProductVariant = async (req, res) => {
     const body = req.body;
     if (!body.id) {
         return res.status(204).send({
@@ -439,20 +453,26 @@ exports.updateProductVariant = (req, res) => {
         values.category_id = body.category_id;
     }
 
-    ProductVariant.update(values, {
-        where: {
-            id: body.id
-        }
-    })
-        .then(_ => {
-            res.send({
-                success: true,
-                message: "Record updated successfully!"
-            });
-        })
-        .catch(err => {
-            res.status(500).send({ success: false, message: err.message });
+    try {
+        const variant = await ProductVariant.update(values, {
+            where: {
+                id: body.id
+            }
         });
+
+        if (body.alternate_products) {
+            // remove all existing alternate products
+            await variant.setProduct_variant_alternate_variants(body.alternate_products)
+        }
+
+        res.send({
+            success: true,
+            message: "Record updated successfully!"
+        });
+    } catch (err) {
+        res.status(500).send({ success: false, message: err.message });
+    }
+
 };
 
 

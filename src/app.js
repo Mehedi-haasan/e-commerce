@@ -38,6 +38,7 @@ require('./routes/product.category.routes')(app);
 require('./routes/carousel.routes')(app);
 require('./routes/product.template.routes')(app);
 require('./routes/sale.order.routes')(app);
+require('./routes/product.campaign.routes')(app);
 
 
 // client error handling
@@ -63,11 +64,11 @@ const Carousel = db.carousel;
 const ProductCategory = db.productCategory;
 const ProductAttribute = db.productAttribute;
 const ProductAttributeValue = db.productAttributeValue;
-const ProductTemplate = db.productTemplate;
-const ProductTemplateAttribute = db.productTemplateAttribute;
-const ProductTemplateAttributeValue = db.productTemplateAttributeValue;
-const ProductVariant = db.productVariant;
-const ProductVariantAttributeValue = db.productVariantAttributeValue;
+// const ProductTemplate = db.productTemplate;
+// const ProductTemplateAttribute = db.productTemplateAttribute;
+// const ProductTemplateAttributeValue = db.productTemplateAttributeValue;
+// const ProductVariant = db.productVariant;
+// const ProductVariantAttributeValue = db.productVariantAttributeValue;
 
 // db.sequelize.sync({ force: true }).then(async () => {
 //     console.log('Drop and Resync Db');
@@ -76,9 +77,13 @@ const ProductVariantAttributeValue = db.productVariantAttributeValue;
 //     await initCategories();
 //     await initProductAttributes();
 //     await initProductAttributeValues();
-//     await initProductTemplates();
-//     await initProductTmplAttributes();
-//     await initProductTmplAttrValues();
+
+
+// // we are not gonna create product template automatically.
+// //    await initProductTemplates();
+// //    await initProductTmplAttributes();
+// //    await initProductTmplAttrValues();
+
 // });
 
 async function initUserRoles() {
