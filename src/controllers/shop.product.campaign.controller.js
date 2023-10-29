@@ -3,6 +3,7 @@ const Op = db.Sequelize.Op;
 
 const ProductCampaign = db.productCampaign;
 const ProductCampaignLine = db.productCampaignLine;
+const ProductVariant = db.productVariant;
 
 exports.getCampaign = async (req, res) => {
     const today = new Date();
@@ -10,15 +11,12 @@ exports.getCampaign = async (req, res) => {
     try {
         const result = await ProductCampaign.findAll({
             where: {
-                active: true,
-                start_date: {
-                    [Op.gte]: today
-                },
-                end_date: {
-                    [Op.lte]: today
-                }
+                active: true
             },
-            includes: [ProductCampaignLine]
+            include: [{
+                model:ProductCampaignLine,
+                include: [ProductVariant]
+            }]
         });
 
         if (!result) {
@@ -35,8 +33,8 @@ exports.getCampaign = async (req, res) => {
             items.push({
                 id: item.id,
                 name: item.name,
-                startDate: item.start_date,
-                endDate: item.end_date,
+                dateStart: item.date_start,
+                dateEnd: item.date_end,
                 imageUrl: item.image_url,
                 lines: lines
             });
@@ -65,6 +63,17 @@ exports.createCampaign = async (req, res) => {
             date_end: req.body.date_end,
             image_url: req.body.image_url,
         });
+
+        if(req.body.lines && req.body.lines.length > 0) {
+            var lines = [];
+            for (let i = 0; i < req.body.lines.length; i++) {
+                const line = req.body.lines[i];
+                line.campaign_id = result.id;
+                lines.push(line);
+            }
+
+            await ProductCampaignLine.bulkCreate(lines);
+        }
 
         res.send({
             success: true,

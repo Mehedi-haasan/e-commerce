@@ -147,6 +147,13 @@ db.productCampaign.hasMany(db.productCampaignLine, {
   foreignKey: "campaign_id"
 })
 
+db.productVariant.belongsTo(db.productCampaignLine, {
+  foreignKey: "product_id"
+})
+db.productCampaignLine.hasMany(db.productVariant, {
+  foreignKey: "product_id"
+})
+
 db.saleOrderLine.belongsTo(db.saleOrder, {
   foreignKey: "order_id"
 })
