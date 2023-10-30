@@ -108,7 +108,7 @@ exports.createProduct = async (req, res) => {
 
     try {
         // create product template
-        const template = await ProductTemplate.create(productBody);
+        const template = await ProductTemplate.create(productBody, { transaction: transaction });
         var attributeIds = []
         for (let i = 0; i < body.attributes.length; i++) {
             const attributeId = body.attributes[i]['attr_id'];
@@ -120,7 +120,7 @@ exports.createProduct = async (req, res) => {
         }
 
         // create product template attributes
-        const attrs = await ProductTemplateAttribute.bulkCreate(attributeIds);
+        const attrs = await ProductTemplateAttribute.bulkCreate(attributeIds, { transaction: transaction });
         var attributeValues = []
         for (let i = 0; i < attrs.length; i++) {
             const attr = attrs[i];
@@ -142,7 +142,7 @@ exports.createProduct = async (req, res) => {
         }
 
         // create product template attribute values
-        await ProductTemplateAttributeValue.bulkCreate(attributeValues);
+        await ProductTemplateAttributeValue.bulkCreate(attributeValues, { transaction: transaction });
 
         // create product variants
         var variants = [];
@@ -157,7 +157,7 @@ exports.createProduct = async (req, res) => {
         }
 
         // create product variant attribute values
-        const variantItems = await ProductVariant.bulkCreate(variants);
+        const variantItems = await ProductVariant.bulkCreate(variants, { transaction: transaction });
         var variantAttributeValues = [];
         for (let i = 0; i < variantItems.length; i++) {
             const variantItem = variantItems[i];
@@ -172,7 +172,7 @@ exports.createProduct = async (req, res) => {
             });
         }
 
-        await ProductVariantAttributeValue.bulkCreate(variantAttributeValues);
+        await ProductVariantAttributeValue.bulkCreate(variantAttributeValues, { transaction: transaction });
 
         // commit transaction
         await transaction.commit();

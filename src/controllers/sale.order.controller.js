@@ -68,87 +68,120 @@ function getProductVariant(id) {
 
 exports.addCartItem = async (req, res) => {
     const body = req.body;
-    if (!body.order_id && !body.product_id && !body.product_qty) {
+    if (!body.product_id && !body.product_qty) {
         return res.status(204).send({
             success: false,
             message: "Request body cannot be empty."
         });
     }
 
-    const product = await getProductVariant(body.product_id);
+    try {
 
-    if (!product) {
-        return res.status(204).send({
-            success: false,
-            message: "Product not found."
+        var orderId = await SaleOrder.findOne({
+            where: {
+                user_id: req.userId,
+                status: 'cart'
+            },
+            include: [{
+                model: SaleOrderLine,
+                where: {
+                    variant_id: body.product_id
+                }
+            }]
         });
-    }
-
-    body.variant_id = product.id;
-    body.user_id = req.userId;
-    body.name = product.name;
-    body.price_unit = product.price;
-    body.subtotal = product.price * body.product_qty;
-
-    SaleOrderLine.create(body)
-        .then(_ => {
-            res.send({
-                success: true,
-                message: "Record created successfully!"
+        
+        if (!orderId) {
+            orderId = await SaleOrder.create({
+                user_id: req.userId,
+                status: "cart"
             });
-        })
-        .catch(err => {
-            res.status(500).send({ success: false, message: err.message });
+        }
+
+        if(orderId.sale_order_lines.length > 0) {
+            const orderLine = orderId.sale_order_lines[0];
+            var values = {
+                product_qty: orderLine.product_qty + body.product_qty,
+                subtotal: orderLine.price_unit * (orderLine.product_qty + body.product_qty)
+            }
+            if (body.custom_values) {
+                values.custom_values = body.custom_values;
+            }
+
+            await orderLine.update(values);
+            const orderLines = await SaleOrderLine.findAll({
+                where: {
+                    order_id: orderId.id
+                }
+            });
+
+            return res.send({
+                success: true,
+                message: "Record updated successfully!",
+                orderId: orderId.id,
+                items: orderLines,
+            });
+        }
+
+        body.order_id = orderId.id;
+
+        const product = await getProductVariant(body.product_id);
+
+        if (!product) {
+            return res.status(204).send({
+                success: false,
+                message: "Product not found."
+            });
+        }
+
+        body.variant_id = product.id;
+        body.user_id = req.userId;
+        body.name = product.name;
+        body.price_unit = product.price;
+        body.subtotal = product.price * body.product_qty;
+
+        await SaleOrderLine.create(body);
+        const orderLines = await SaleOrderLine.findAll({
+            where: {
+                order_id: orderId.id
+            }
         });
+
+        res.send({
+            success: true,
+            message: "Record created successfully!",
+            orderId: orderId.id,
+            items: orderLines,
+        });
+    } catch (err) {
+        res.status(500).send({ success: false, message: err.message });
+    }
 };
 
+exports.placeOrder = async (req, res) => {
 
-exports.updateCartItem = async (req, res) => {
-    const body = req.body;
-    if (!body.line_id && !body.product_qty) {
-        return res.status(204).send({
-            success: false,
-            message: "Request body cannot be empty."
-        });
-    }
-
-    const orderLine = await SaleOrderLine.findOne({
-        where: {
-            id: body.line_id,
-            user_id: req.userId
-        }
-    })
-
-    if (!orderLine) {
-        return res.status(204).send({
-            success: false,
-            message: "Order line not found."
-        });
-    }
-
-    var values = {
-        product_qty: body.product_qty,
-        subtotal: orderLine.price_unit * body.product_qty
-    }
-    if (body.custom_values) {
-        values.custom_values = body.custom_values;
-    }
-
-    SaleOrderLine.update(values, {
-        where: {
-            id: body.line_id,
-            user_id: req.userId
-        }
-    })
-        .then(_ => {
-            res.send({
-                success: true,
-                message: "Record updated successfully!"
-            });
+    try {
+        const orderLine = await SaleOrder.findOne({
+            where: {
+                user_id: req.userId,
+                status: 'cart'
+            }
         })
-        .catch(err => {
-            res.status(500).send({ success: false, message: err.message });
-        });
+
+        if (!orderLine) {
+            return res.status(204).send({
+                success: false,
+                message: "Order not found."
+            });
+        }
+
+        var values = {
+            status: 'draft'
+        }
+        await orderLine.update(values);
+
+    } catch (err) {
+        res.status(500).send({ success: false, message: err.message });
+    }
 };
 
 
