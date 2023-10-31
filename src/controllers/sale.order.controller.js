@@ -97,7 +97,7 @@ exports.addCartItem = async (req, res) => {
             });
         }
 
-        if(orderId.sale_order_lines.length > 0) {
+        if(orderId.sale_order_lines!= undefined && orderId.sale_order_lines.length > 0) {
             const orderLine = orderId.sale_order_lines[0];
             var values = {
                 product_qty: orderLine.product_qty + body.product_qty,
@@ -177,8 +177,27 @@ exports.placeOrder = async (req, res) => {
         var values = {
             status: 'draft'
         }
-        await orderLine.update(values);
+        const orderLines = await SaleOrderLine.findAll({
+            where: {
+                order_id: orderLine.id
+            }
+        });
 
+        if (!orderLines) {
+            return res.status(204).send({
+                success: false,
+                message: "Order Items not found."
+            });
+        }
+
+        await orderLine.update(values);
+        res.send({
+            success: true,
+            message: "Order successfully placed!",
+            orderId: orderLine.id,
+            items: orderLines,
+        });
+        
     } catch (err) {
         res.status(500).send({ success: false, message: err.message });
     }
