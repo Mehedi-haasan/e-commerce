@@ -4,7 +4,7 @@
 		"name": "mahlun.com",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17684729",
-		"_collection_link": "https://mazharulsabbir-api.postman.co/workspace/My-Workspace~05a8718a-a603-4ebf-8d3b-b09d8e3b2ce7/collection/17684729-a95c114a-e5aa-4065-bf7a-17c4b45884a2?source=collection_link"
+		"_collection_link": "https://mazharulsabbir-api.postman.co/workspace/My-Workspace~05a8718a-a603-4ebf-8d3b-b09d8e3b2ce7/collection/17684729-a95c114a-e5aa-4065-bf7a-17c4b45884a2?action=share&source=collection_link&creator=17684729"
 	},
 	"item": [
 		{
@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"mazharulsabbir2\",\n    \"email\": \"admin1@mail.com\",\n    \"password\": \"admin\",\n    \"roles\": [\n        \"user\",\n        \"moderator\"\n    ]\n}",
+							"raw": "{\n    \"username\": \"mazharulsabbir\",\n    \"email\": \"admin@mail.com\",\n    \"password\": \"admin\",\n    \"roles\": [\n        \"user\",\n        \"moderator\"\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\":\"mazharulsabbir2\",\n    \"password\":\"admin\"\n}",
+							"raw": "{\n    \"username\":\"mazharulsabbir\",\n    \"password\":\"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -231,7 +231,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Premier's CSE Exam Kit V4\",\n    \"price\": 450.90,\n    \"active\": true,\n    \"standard_price\": 280.88,\n    \"sku\": \"PCEK0001\",\n    \"sequence\": 100,\n    \"category_id\": 1,\n    \"description\": \"This book is made for CSE students.\",\n    \"image_url\": \"/cse/book/image.url.1\",\n    \"attributes\": [\n        {\n            \"attr_id\": 1,\n            \"values\": [\n                1,\n                2,\n                3\n            ]\n        },\n        {\n            \"attr_id\": 2,\n            \"values\": [\n                4,\n                5\n            ]\n        }\n    ]\n}",
+							"raw": "{\n    \"name\": \"Premier's CSE Exam Kit - V3\",\n    \"price\": 450.90,\n    \"active\": true,\n    \"standard_price\": 280.88,\n    \"sku\": \"PCEK0001\",\n    \"sequence\": 100,\n    \"category_id\": 4,\n    \"description\": \"This book is made for CSE students.\",\n    \"image_url\": \"https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=60&w=800&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHx8MA%3D%3D\",\n    \"attributes\": [\n        {\n            \"attr_id\": 4,\n            \"values\": [\n                11,\n                12\n            ]\n        },\n        {\n            \"attr_id\": 5,\n            \"values\": [\n                14,\n                15,\n                16\n            ]\n        },\n        {\n            \"attr_id\": 6,\n            \"values\": [\n                17,\n                18\n            ]\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -249,7 +249,178 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "POST: Create Product - Book",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Premier's CSE Exam Kit\",\n    \"price\": 450.90,\n    \"active\": true,\n    \"standard_price\": 280.88,\n    \"sku\": \"PCEK0001\",\n    \"sequence\": 100,\n    \"category_id\": 4,\n    \"description\": \"This book is made for CSE students.\",\n    \"image_url\": \"https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=60&w=800&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHx8MA%3D%3D\",\n    \"attributes\": [\n        {\n            \"attr_id\": 4,\n            \"values\": [\n                11,\n                12\n            ]\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/product",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"product"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "1000"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "999"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 07:53:57 GMT"
+								},
+								{
+									"key": "X-RateLimit-Reset",
+									"value": "1698566044"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "x-access-token, Origin, Content-Type, Accept"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-Skb6Vt7RRcIA4IeWpbCuC6XqOLM\""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Record Created successfully!\"\n}"
+						},
+						{
+							"name": "POST: Create Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Premier's CSE Exam Kit - V2\",\n    \"price\": 450.90,\n    \"active\": true,\n    \"standard_price\": 280.88,\n    \"sku\": \"PCEK0001\",\n    \"sequence\": 100,\n    \"category_id\": 4,\n    \"description\": \"This book is made for CSE students.\",\n    \"image_url\": \"https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=60&w=800&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHx8MA%3D%3D\",\n    \"attributes\": [\n        {\n            \"attr_id\": 4,\n            \"values\": [\n                11,\n                12\n            ]\n        },\n        {\n            \"attr_id\": 5,\n            \"values\": [\n                13,\n                14,\n                15\n            ]\n        },\n        {\n            \"attr_id\": 6,\n            \"values\": [\n                16,\n                17,\n                18\n            ]\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/product",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"product"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "1000"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "999"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 07:59:51 GMT"
+								},
+								{
+									"key": "X-RateLimit-Reset",
+									"value": "1698566396"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "x-access-token, Origin, Content-Type, Accept"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-Skb6Vt7RRcIA4IeWpbCuC6XqOLM\""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Record Created successfully!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "GET: Product Variants",
@@ -269,7 +440,7 @@
 							"variable": [
 								{
 									"key": "templateId",
-									"value": "3"
+									"value": "4"
 								}
 							]
 						}
@@ -337,6 +508,15 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Premier's CSE Exam Kit - V1\",\n    \"attributes\": [\n        {\n            \"attr_id\": 4,\n            \"values\": [\n                11,\n                12\n            ]\n        },\n        {\n            \"attr_id\": 6,\n            \"values\": [\n                16,\n                17,\n                18\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{baseUrl}}/api/product",
 							"host": [
@@ -357,7 +537,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\":6,\n    \"price\":800\n}",
+							"raw": "{\n    \"id\": 12,\n    \"price\": 800,\n    \"alternate_products\": [\n        5\n    ],\n    \"custom_fields\": [\n        {\n            \"name\": \"Field 1\",\n            \"is_required\": true,\n            \"placeholder\": \"Enter Field1 Value\",\n            \"input_type\": \"number\"\n        },\n        {\n            \"name\": \"Field 2\",\n            \"is_required\": true,\n            \"placeholder\": \"Enter Field2 Value\",\n            \"input_type\": \"text\"\n        },\n        {\n            \"name\": \"Field 3\",\n            \"is_required\": true,\n            \"placeholder\": \"Enter Field3 Value\",\n            \"input_type\": \"password\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -389,7 +569,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"product_qty\": 1,\n    \"product_id\": 3,\n    \"order_id\": 2,\n    \"custom_values\":\"{'field_id':1,'value':'This is customer provided value'}\"\n}",
+							"raw": "{\n    \"product_qty\": 1,\n    \"product_id\": 3,\n    \"custom_values\":\"{'field_id':1,'value':'This is customer provided value'}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -430,13 +610,13 @@
 					"response": []
 				},
 				{
-					"name": "PUT: Update Cart",
+					"name": "POST: Place Order",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"product_qty\": 10,\n    \"line_id\": 3,\n    \"custom_values\":\"{'field_id':1,'value':'This is customer provided value'}\"\n}",
+							"raw": "{}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -444,14 +624,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/cart/update-item",
+							"raw": "{{baseUrl}}/api/cart/place-order",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"cart",
-								"update-item"
+								"place-order"
 							]
 						}
 					},
@@ -507,7 +687,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Subscription\",\n    \"display_type\":\"selection\",\n    \"attr_values\":[\n        {\n            \"active\":true,\n            \"value\":\"1 Month\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"3 Month\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"6 Month\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"1 Year\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\":\"Edition\",\n    \"display_type\":\"selection\",\n    \"attr_values\":[\n        {\n            \"active\":true,\n            \"value\":\"First\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"Second\"\n        },\n        {\n            \"active\":true,\n            \"value\":\"Third\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -677,7 +857,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"TV Series\",\n    \"image_url\":\"/tv/series/images\"\n}",
+							"raw": "{\n    \"name\":\"Books\",\n    \"image_url\":\"https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=60&w=800&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHx8MA%3D%3D\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -740,6 +920,58 @@
 								"api",
 								"category",
 								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Campaign/Offers",
+			"item": [
+				{
+					"name": "GET: Campaigns",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/product/campaigns",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"campaigns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST: Create Campaign",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Get 10 - 18% Discount\",\n    \"date_start\": \"2023-10-29\",\n    \"date_end\": \"2023-11-29\",\n    \"image_url\": \"my/campaign/image/url.png\",\n    \"lines\": [\n        {\n            \"product_id\": 1,\n            \"discount\": 10\n        },\n        {\n            \"product_id\": 2,\n            \"discount\": 15\n        },\n        {\n            \"product_id\": 3,\n            \"discount\": 18\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/product/campaign",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"campaign"
 							]
 						}
 					},
