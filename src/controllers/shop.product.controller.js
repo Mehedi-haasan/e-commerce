@@ -641,6 +641,25 @@ exports.updateProductVariant = async (req, res) => {
             }
         }
 
+        if(body.custom_fields){
+            // remove all existing custom fields
+            await ProductCustomFields.destroy({
+                where: {
+                    variant_id: variant.id
+                }
+            });
+
+            // add new custom fields
+            var customFields = [];
+            for (let i = 0; i < body.custom_fields.length; i++) {
+                const customField = body.custom_fields[i];
+                customField.variant_id = variant.id;
+                customFields.push(customField);
+            }
+
+            await ProductCustomFields.bulkCreate(customFields);
+        }
+
         res.send({
             success: true,
             message: "Record updated successfully!"
