@@ -272,7 +272,7 @@ exports.getProductVariants = async (req, res) => {
         order by pp.id;        
         `
 
-        const variantCustomFieldsQuery = `select name, is_required, placeholder, input_type, variant_id from product_custom_fields where variant_id in (:variant_ids);`
+        const variantCustomFieldsQuery = `select id, name, is_required, placeholder, input_type, variant_id from product_custom_fields where variant_id in (:variant_ids);`
 
         const variantRatingsQuery = `select variant_id, avg(rating) as rating_avg from customer_feedbacks where variant_id in (:variant_ids) group by variant_id;`
 
