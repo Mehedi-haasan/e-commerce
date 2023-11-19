@@ -40,4 +40,11 @@ module.exports = function (app) {
         controller.deleteCartItem
     );
 
+    app.put(
+        "/api/order/update-status",
+        [authJwt.verifyToken],
+        controller.updateOrderStatus
+    );
+
+
 };
