@@ -213,7 +213,7 @@ exports.deleteCartItem = (req, res) => {
         });
     }
 
-    Carousel.destroy({
+    SaleOrderLine.destroy({
         where: {
             id: body.id
         }

@@ -641,7 +641,7 @@ exports.updateProductVariant = async (req, res) => {
             }
         }
 
-        if(body.custom_fields){
+        if (body.custom_fields) {
             // remove all existing custom fields
             await ProductCustomFields.destroy({
                 where: {
@@ -694,4 +694,33 @@ exports.deleteProduct = (req, res) => {
         .catch(err => {
             res.status(500).send({ success: false, message: err.message });
         });
+};
+
+
+
+exports.searchProduct = (req, res) => {
+    const query = req.query;
+    if (!query.search) {
+        return res.status(204).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+    }
+
+    const searchQuery = `SELECT id, name, image_url, price FROM product_templates WHERE name LIKE :search LIMIT 5;`
+
+    sequelize.query(
+        searchQuery,
+        {
+            replacements: { search: '%' + query.search + '%' },
+            type: sequelize.QueryTypes.SELECT
+        }
+    ).then(data => {
+        res.send({
+            success: true,
+            items: data
+        });
+    }).catch(err => {
+        res.status(500).send({ success: false, message: err.message });
+    });
 };

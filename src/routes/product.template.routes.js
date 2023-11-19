@@ -49,4 +49,10 @@ module.exports = function (app) {
         [authJwt.verifyToken],
         controller.deleteProduct
     );
+
+
+    app.get(
+        "/api/search/products",
+        controller.searchProduct
+    );
 };
