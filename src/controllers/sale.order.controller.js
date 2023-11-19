@@ -3,6 +3,7 @@ const Op = db.Sequelize.Op;
 
 const ProductVariant = db.productVariant;
 const SaleOrder = db.saleOrder;
+const User = db.user;
 const SaleOrderLine = db.saleOrderLine;
 
 exports.getOrders = async (req, res) => {
@@ -13,7 +14,11 @@ exports.getOrders = async (req, res) => {
                 status: {
                     [Op.or]: ["draft", "confirmed", "done"]
                 }
-            }
+            },
+            include: [{
+                model: User,
+                attributes: ['id', 'username', 'email'],
+            }]
         });
 
         // const total = orderLines.reduce((a, b) => a + b.subtotal, 0);
