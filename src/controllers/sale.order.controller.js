@@ -299,6 +299,14 @@ exports.updateCartItems = async (req, res) => {
 
 exports.placeOrder = async (req, res) => {
     const transaction = await sequelize.transaction();
+    const body = req.body;
+    if (!body.delivery_id) {
+        return res.status(204).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+    }
+
     try {
         const orderLine = await SaleOrder.findOne({
             where: {
@@ -327,10 +335,22 @@ exports.placeOrder = async (req, res) => {
             });
         }
 
+        const deliveryAddress = await UserAddress.findOne({
+            where: {
+                id: body.delivery_id
+            }
+        }, { transaction: transaction });
+
+        const shippingAddress = await UserAddress.findOne({
+            where: {
+                id: body.shipping_id || body.delivery_id
+            }
+        }, { transaction: transaction });
+
         const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
         const discount = 0;
-        const delivery_charge = 0;
+        const delivery_charge = shippingAddress.delivery_charge;
         const tax = 0;
 
         var values = {
