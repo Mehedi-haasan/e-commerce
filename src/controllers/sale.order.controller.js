@@ -21,34 +21,6 @@ exports.getOrders = async (req, res) => {
             }]
         });
 
-        // const total = orderLines.reduce((a, b) => a + b.subtotal, 0);
-        // const subtotal = total;
-        // const discount = 0;
-        // const delivery_charge = 0;
-        // const tax = 0;
-
-        // await orderId.update({
-        //     total: total,
-        //     subtotal: subtotal,
-        //     discount: discount,
-        //     delivery_charge: delivery_charge,
-        //     tax: tax
-        // });
-
-        // const orderIdNew = await SaleOrder.findOne({
-        //     where: {
-        //         id: orderId.id
-        //     }
-        // });
-
-
-        // const orderIdNew = await SaleOrder.findOne({
-        //     where: {
-        //         id: orderId.id
-        //     }
-        // });
-
-
         return res.status(200).send({
             success: true,
             items: result
@@ -84,7 +56,7 @@ exports.getCartItems = async (req, res) => {
             }]
         });
 
-        const total = orderLines.reduce((a, b) => a + b.subtotal, 0);
+        const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
         const discount = 0;
         const delivery_charge = 0;
@@ -210,7 +182,7 @@ exports.addCartItem = async (req, res) => {
             }
         });
 
-        const total = orderLines.reduce((a, b) => a + b.subtotal, 0);
+        const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
         const discount = 0;
         const delivery_charge = 0;
@@ -229,6 +201,83 @@ exports.addCartItem = async (req, res) => {
             message: "Record created successfully!",
             orderId: orderId.id,
             items: orderLines,
+        });
+    } catch (err) {
+        res.status(500).send({ success: false, message: err.message });
+    }
+};
+
+exports.updateCartItems = async (req, res) => {
+    const body = req.body;
+    if (body.length == 0) {
+        return res.status(204).send({
+            success: false,
+            message: "Request body cannot be empty."
+        });
+    }
+
+    try {
+
+        var orderId = await SaleOrder.findOne({
+            where: {
+                user_id: req.userId,
+                status: 'cart'
+            },
+        });
+
+        if (!orderId) {
+            orderId = await SaleOrder.create({
+                user_id: req.userId,
+                status: "cart"
+            });
+        }
+        const saleOrderLines = await SaleOrderLine.findAll({
+            where: {
+                order_id: orderId.id
+            }
+        })
+
+        body.forEach(async (element) => {
+            const product = await getProductVariant(element.product_id);
+            if (!product) {
+                return res.status(204).send({
+                    success: false,
+                    message: "Product not found."
+                });
+            }   
+            
+            const orderLine = saleOrderLines.find(p => p.variant_id === element.product_id);
+            if(orderLine){
+                await orderLine.update({
+                    product_qty: element.product_qty,
+                    subtotal: product.price * element.product_qty
+                });
+            }
+        })
+
+        const orderLines = await SaleOrderLine.findAll({
+            where: {
+                order_id: orderId.id
+            }
+        });
+
+        const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
+        const subtotal = total;
+        const discount = 0;
+        const delivery_charge = 0;
+        const tax = 0;
+
+        await orderId.update({
+            total: total,
+            subtotal: subtotal,
+            discount: discount,
+            delivery_charge: delivery_charge,
+            tax: tax
+        });
+
+        res.send({
+            success: true,
+            message: "Record created successfully!"
         });
     } catch (err) {
         res.status(500).send({ success: false, message: err.message });
@@ -265,7 +314,7 @@ exports.placeOrder = async (req, res) => {
             });
         }
 
-        const total = orderLines.reduce((a, b) => a + b.subtotal, 0);
+        const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
         const discount = 0;
         const delivery_charge = 0;
@@ -368,7 +417,7 @@ exports.deleteCartItem = async (req, res) => {
             }
         });
 
-        const total = orderLines.reduce((a, b) => a + b.subtotal, 0);
+        const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
         const discount = 0;
         const delivery_charge = 0;

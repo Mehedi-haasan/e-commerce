@@ -28,6 +28,12 @@ module.exports = function (app) {
         controller.addCartItem
     );
 
+    app.put(
+        "/api/cart/update-items",
+        [authJwt.verifyToken],
+        controller.updateCartItems
+    );
+
     app.post(
         "/api/cart/place-order",
         [authJwt.verifyToken],
