@@ -14,19 +14,19 @@ module.exports = function (app) {
 
     app.post(
         "/api/carousel",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.createCarousel
     );
 
     app.put(
         "/api/carousel",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.updateCarousel
     );
 
     app.delete(
         "/api/carousel",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.deleteCarousel
     );
 };

@@ -64,6 +64,7 @@ const Carousel = db.carousel;
 const ProductCategory = db.productCategory;
 const ProductAttribute = db.productAttribute;
 const ProductAttributeValue = db.productAttributeValue;
+const States = db.states;
 // const ProductTemplate = db.productTemplate;
 // const ProductTemplateAttribute = db.productTemplateAttribute;
 // const ProductTemplateAttributeValue = db.productTemplateAttributeValue;
@@ -72,6 +73,7 @@ const ProductAttributeValue = db.productAttributeValue;
 
 // db.sequelize.sync({ force: true }).then(async () => {
 //     console.log('Drop and Resync Db');
+//     await initStates();
 //     await initUserRoles();
 //     await initCarousel();
 //     await initCategories();
@@ -101,6 +103,226 @@ async function initUserRoles() {
     Role.create({
         id: 3,
         name: "admin"
+    });
+}
+
+
+async function initStates() {
+    // states
+    States.create({
+        id: 1,
+        name: "Dhaka",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 2,
+        name: "Chittagong",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 3,
+        name: "Khulna",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 4,
+        name: "Rajshahi",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 5,
+        name: "Sylhet",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 6,
+        name: "Barisal",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 7,
+        name: "Rangpur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 8,
+        name: "Mymensingh",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 9,
+        name: "Dinajpur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 10,
+        name: "Cox's Bazar",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 11,
+        name: "Jessore",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 12,
+        name: "Comilla",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 13,
+        name: "Bogra",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 14,
+        name: "Brahmanbaria",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 15,
+        name: "Jamalpur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 16,
+        name: "Narayanganj",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 17,
+        name: "Natore",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 18,
+        name: "Tangail",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 19,
+        name: "Faridpur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 20,
+        name: "Pabna",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 21,
+        name: "Manikganj",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 22,
+        name: "Noakhali",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 23,
+        name: "Gazipur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 24,
+        name: "Bhola",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 25,
+        name: "Sherpur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 26,
+        name: "Chandpur",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
+    });
+
+    States.create({
+        id: 27,
+        name: "Chapainawabganj",
+        country: "Bangladesh",
+        state_code: "BD",
+        delivery_charge: 50,
     });
 }
 

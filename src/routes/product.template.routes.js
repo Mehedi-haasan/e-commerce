@@ -16,13 +16,13 @@ module.exports = function (app) {
 
     app.post(
         "/api/product",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.createProduct
     );
 
     app.post(
         "/api/product/custom-fields",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.createVariantCustomFields
     );
 
@@ -34,22 +34,21 @@ module.exports = function (app) {
 
     app.put(
         "/api/product",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.updateProduct
     );
 
     app.put(
         "/api/product-variant",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.updateProductVariant
     );
 
     app.delete(
         "/api/product",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.deleteProduct
     );
-
 
     app.get(
         "/api/search/products",

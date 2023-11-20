@@ -12,6 +12,8 @@ exports.signup = (req, res) => {
     // Save User to Database
     User.create({
         username: req.body.username,
+        first_name: req.body.firstName,
+        last_name: req.body.lastName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
     })
@@ -25,18 +27,18 @@ exports.signup = (req, res) => {
                     }
                 }).then(roles => {
                     user.setRoles(roles).then(() => {
-                        res.send({ message: "User was registered successfully!" });
+                        res.send({ success: true, message: "Registration successful!" });
                     });
                 });
             } else {
                 // user role = 1
                 user.setRoles([1]).then(() => {
-                    res.send({ message: "User was registered successfully!" });
+                    res.send({ success: true, message: "Registration successful!" });
                 });
             }
         })
         .catch(err => {
-            res.status(500).send({ message: err.message });
+            res.status(500).send({ success: false, message: err.message });
         });
 };
 
@@ -48,7 +50,7 @@ exports.signin = (req, res) => {
     })
         .then(user => {
             if (!user) {
-                return res.status(404).send({ message: "User Not found." });
+                return res.status(404).send({ success: false, message: "User Not found." });
             }
 
             var passwordIsValid = bcrypt.compareSync(
@@ -79,6 +81,9 @@ exports.signin = (req, res) => {
                 res.status(200).send({
                     id: user.id,
                     username: user.username,
+                    firstName: user.first_name,
+                    lastName: user.last_name,
+                    displayName: user.first_name + ' ' + user.last_name,
                     email: user.email,
                     roles: authorities,
                     accessToken: token
@@ -86,6 +91,6 @@ exports.signin = (req, res) => {
             });
         })
         .catch(err => {
-            res.status(500).send({ message: err.message });
+            res.status(500).send({ success: false, message: err.message });
         });
 };

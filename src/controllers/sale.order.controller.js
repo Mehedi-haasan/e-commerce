@@ -31,19 +31,22 @@ exports.getOrders = async (req, res) => {
 };
 
 exports.getCartItems = async (req, res) => {
+    const transaction = await sequelize.transaction();
+
     try {
         var orderId = await SaleOrder.findOne({
             where: {
                 user_id: req.userId,
                 status: 'cart'
-            }
-        });
+            },
+
+        }, { transaction: transaction });
 
         if (!orderId) {
             orderId = await SaleOrder.create({
                 user_id: req.userId,
                 status: "cart"
-            });
+            }, { transaction: transaction });
         }
 
         const orderLines = await SaleOrderLine.findAll({
@@ -54,7 +57,7 @@ exports.getCartItems = async (req, res) => {
                 model: ProductVariant,
                 attributes: ['id', 'name', 'price', 'image_url'],
             }]
-        });
+        }, { transaction: transaction });
 
         const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
@@ -68,13 +71,16 @@ exports.getCartItems = async (req, res) => {
             discount: discount,
             delivery_charge: delivery_charge,
             tax: tax
-        });
+        }, { transaction: transaction });
 
         const orderIdNew = await SaleOrder.findOne({
             where: {
                 id: orderId.id
             }
-        });
+        }, { transaction: transaction });
+
+        // commit transaction
+        await transaction.commit();
 
         return res.status(200).send({
             success: true,
@@ -82,6 +88,7 @@ exports.getCartItems = async (req, res) => {
             items: orderLines
         });
     } catch (err) {
+        await transaction.rollback();
         res.status(500).send({ success: false, message: err.message });
     }
 };
@@ -216,6 +223,8 @@ exports.updateCartItems = async (req, res) => {
         });
     }
 
+    const transaction = await sequelize.transaction();
+
     try {
 
         var orderId = await SaleOrder.findOne({
@@ -223,19 +232,19 @@ exports.updateCartItems = async (req, res) => {
                 user_id: req.userId,
                 status: 'cart'
             },
-        });
+        }, { transaction: transaction });
 
         if (!orderId) {
             orderId = await SaleOrder.create({
                 user_id: req.userId,
                 status: "cart"
-            });
+            }, { transaction: transaction });
         }
         const saleOrderLines = await SaleOrderLine.findAll({
             where: {
                 order_id: orderId.id
             }
-        })
+        }, { transaction: transaction })
 
         body.forEach(async (element) => {
             const product = await getProductVariant(element.product_id);
@@ -244,10 +253,10 @@ exports.updateCartItems = async (req, res) => {
                     success: false,
                     message: "Product not found."
                 });
-            }   
-            
+            }
+
             const orderLine = saleOrderLines.find(p => p.variant_id === element.product_id);
-            if(orderLine){
+            if (orderLine) {
                 await orderLine.update({
                     product_qty: element.product_qty,
                     subtotal: product.price * element.product_qty
@@ -259,7 +268,7 @@ exports.updateCartItems = async (req, res) => {
             where: {
                 order_id: orderId.id
             }
-        });
+        }, { transaction: transaction });
 
         const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
@@ -273,26 +282,30 @@ exports.updateCartItems = async (req, res) => {
             discount: discount,
             delivery_charge: delivery_charge,
             tax: tax
-        });
+        }, { transaction: transaction });
+
+        // commit transaction
+        await transaction.commit();
 
         res.send({
             success: true,
             message: "Record created successfully!"
         });
     } catch (err) {
+        await transaction.rollback();
         res.status(500).send({ success: false, message: err.message });
     }
 };
 
 exports.placeOrder = async (req, res) => {
-
+    const transaction = await sequelize.transaction();
     try {
         const orderLine = await SaleOrder.findOne({
             where: {
                 user_id: req.userId,
                 status: 'cart'
             }
-        })
+        }, { transaction: transaction })
 
         if (!orderLine) {
             return res.status(204).send({
@@ -305,7 +318,7 @@ exports.placeOrder = async (req, res) => {
             where: {
                 order_id: orderLine.id
             }
-        });
+        }, { transaction: transaction });
 
         if (!orderLines) {
             return res.status(204).send({
@@ -329,7 +342,11 @@ exports.placeOrder = async (req, res) => {
             tax: tax
         }
 
-        await orderLine.update(values);
+        await orderLine.update(values, { transaction: transaction });
+
+        // commit transaction
+        await transaction.commit();
+
         res.send({
             success: true,
             message: "Order successfully placed!",
@@ -338,6 +355,7 @@ exports.placeOrder = async (req, res) => {
         });
 
     } catch (err) {
+        await transaction.rollback();
         res.status(500).send({ success: false, message: err.message });
     }
 };
@@ -351,12 +369,14 @@ exports.updateOrderStatus = async (req, res) => {
         });
     }
 
+    const transaction = await sequelize.transaction();
+
     try {
         const order = await SaleOrder.findOne({
             where: {
                 id: body.id
             }
-        });
+        }, { transaction: transaction });
 
         if (!order) {
             return res.status(204).send({
@@ -367,13 +387,17 @@ exports.updateOrderStatus = async (req, res) => {
 
         await order.update({
             status: body.status
-        });
+        }, { transaction: transaction });
+
+        // commit transaction
+        await transaction.commit();
 
         res.send({
             success: true,
             message: "Order status updated successfully!"
         });
     } catch (err) {
+        await transaction.rollback();
         res.status(500).send({ success: false, message: err.message });
     }
 };
@@ -388,13 +412,16 @@ exports.deleteCartItem = async (req, res) => {
             message: "Request body cannot be empty."
         });
     }
+
+    const transaction = await sequelize.transaction();
+
     try {
 
         const orderLineId = await SaleOrderLine.findOne({
             where: {
                 id: body.id
             }
-        });
+        }, { transaction: transaction });
 
         if (!orderLineId) {
             return res.status(204).send({
@@ -407,15 +434,15 @@ exports.deleteCartItem = async (req, res) => {
             where: {
                 id: orderLineId.order_id
             }
-        });
+        }, { transaction: transaction });
 
-        await orderLineId.destroy();
+        await orderLineId.destroy({ transaction: transaction });
 
         const orderLines = await SaleOrderLine.findAll({
             where: {
                 order_id: orderId.id
             }
-        });
+        }, { transaction: transaction });
 
         const total = orderLines.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0);
         const subtotal = total;
@@ -429,13 +456,17 @@ exports.deleteCartItem = async (req, res) => {
             discount: discount,
             delivery_charge: delivery_charge,
             tax: tax
-        });
+        }, { transaction: transaction });
+
+        // commit transaction
+        await transaction.commit();
 
         res.send({
             success: true,
             message: "Record deleted successfully!"
         });
     } catch (err) {
+        await transaction.rollback();
         res.status(500).send({ success: false, message: err.message });
     }
 };

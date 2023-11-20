@@ -21,19 +21,19 @@ module.exports = function (app) {
 
     app.post(
         "/api/product/category",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.createProductCategory
     );
 
     app.put(
         "/api/product/category",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.updateProductCategory
     );
 
     app.delete(
         "/api/product/category",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.deleteProductCategory
     );
 };

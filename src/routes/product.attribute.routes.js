@@ -18,31 +18,31 @@ module.exports = function (app) {
 
     app.post(
         "/api/product/attribute",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.createProductAttributeValue
     );
 
     app.put(
         "/api/product/attribute",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.updateProductAttribute
     );
 
     app.put(
         "/api/product/attribute/value",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.updateProductAttributeValue
     );
 
     app.delete(
         "/api/product/attribute/:attributeId",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.deleteProductAttribute
     );
 
     app.delete(
         "/api/product/attribute/value/:attributeValueId",
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isAdmin],
         controller.deleteProductAttributeValue
     );
 };

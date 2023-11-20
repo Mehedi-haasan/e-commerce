@@ -10,23 +10,52 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/test/all", controller.allAccess);
-
     app.get(
-        "/api/test/user",
+        "/api/user",
         [authJwt.verifyToken],
-        controller.userBoard
+        controller.getUserProfile
+    );
+
+
+    app.put(
+        "/api/user",
+        [authJwt.verifyToken],
+        controller.updateProfile
+    );
+
+    app.put(
+        "/api/user/change-password",
+        [authJwt.verifyToken],
+        controller.changePassword
     );
 
     app.get(
-        "/api/test/mod",
-        [authJwt.verifyToken, authJwt.isModerator],
-        controller.moderatorBoard
+        "/api/user/states",
+        [authJwt.verifyToken],
+        controller.getStates
     );
 
     app.get(
-        "/api/test/admin",
-        [authJwt.verifyToken, authJwt.isAdmin],
-        controller.adminBoard
+        "/api/user/addresses",
+        [authJwt.verifyToken],
+        controller.getAddresses
+    );
+
+    app.post(
+        "/api/user/address",
+        [authJwt.verifyToken],
+        controller.createAddress
+    );
+
+    app.put(
+        "/api/user/address/:addressId",
+        [authJwt.verifyToken],
+        controller.updateAddress
+    );
+
+    app.delete(
+        "/api/user/address:addressId",
+        [authJwt.verifyToken],
+        controller.deleteAddress
     );
 };

@@ -3,25 +3,33 @@ const config = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.user;
 
-verifyToken = (req, res, next) => {
+verifyToken = async (req, res, next) => {
     let token = req.headers["x-access-token"];
 
     if (!token) {
         return res.status(403).send({
-            success:false,
+            success: false,
             message: "No token provided!"
         });
     }
 
     jwt.verify(token,
         config.secret,
-        (err, decoded) => {
+        async (err, decoded) => {
             if (err) {
                 return res.status(401).send({
-                    success:false,
+                    success: false,
                     message: "Unauthorized!",
                 });
             }
+            const user = await User.findByPk(decoded.id);
+            if (!user) {
+                return res.status(401).send({
+                    success: false,
+                    message: "User does not exist!",
+                });
+            }
+            
             req.userId = decoded.id;
             next();
         });
@@ -38,7 +46,7 @@ isAdmin = (req, res, next) => {
             }
 
             res.status(403).send({
-                success:false,
+                success: false,
                 message: "Require Admin Role!"
             });
             return;
@@ -57,7 +65,7 @@ isModerator = (req, res, next) => {
             }
 
             res.status(403).send({
-                success:false,
+                success: false,
                 message: "Require Moderator Role!"
             });
         });
@@ -80,7 +88,7 @@ isModeratorOrAdmin = (req, res, next) => {
             }
 
             res.status(403).send({
-                success:false,
+                success: false,
                 message: "Require Moderator or Admin Role!"
             });
         });

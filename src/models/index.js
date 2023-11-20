@@ -23,6 +23,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("./user.model.js")(sequelize, Sequelize);
+db.userAddress = require("./user.address.model.js")(sequelize, Sequelize);
+db.states = require("./user.state.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.carousel = require("./shop.carousel.js")(sequelize, Sequelize);
 
@@ -59,6 +61,20 @@ db.role.belongsToMany(db.user, {
 });
 db.user.belongsToMany(db.role, {
   through: "user_roles"
+});
+
+db.userAddress.belongsTo(db.user, {
+  foreignKey: "user_id"
+});
+db.user.hasMany(db.userAddress, {
+  foreignKey: "user_id"
+});
+
+db.userAddress.belongsTo(db.states, {
+  foreignKey: "state_id"
+});
+db.states.hasMany(db.userAddress, {
+  foreignKey: "state_id"
 });
 
 db.productAttributeValue.belongsTo(db.productAttribute, {
@@ -166,6 +182,20 @@ db.user.hasMany(db.saleOrder, {
 })
 db.saleOrder.belongsTo(db.user, {
   foreignKey: "user_id"
+})
+
+db.saleOrder.hasMany(db.userAddress, {
+  foreignKey: "delivery_address_id"
+})
+db.userAddress.belongsTo(db.saleOrder, {
+  foreignKey: "delivery_address_id"
+})
+
+db.saleOrder.hasMany(db.userAddress, {
+  foreignKey: "shipping_address_id"
+})
+db.userAddress.belongsTo(db.saleOrder, {
+  foreignKey: "shipping_address_id"
 })
 
 db.saleOrderLine.belongsTo(db.productVariant, {
