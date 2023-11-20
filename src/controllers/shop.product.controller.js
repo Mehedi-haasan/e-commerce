@@ -274,7 +274,7 @@ exports.getProductVariants = async (req, res) => {
 
         const variantCustomFieldsQuery = `select id, name, is_required, placeholder, input_type, variant_id from product_custom_fields where variant_id in (:variant_ids);`
 
-        const variantRatingsQuery = `select variant_id, avg(rating) as rating_avg from customer_feedbacks where variant_id in (:variant_ids) group by variant_id;`
+        const variantRatingsQuery = `select variant_id, group_concat(rating) as ratings, avg(rating) as rating_avg from customer_feedbacks where variant_id in (:variant_ids) group by variant_id;`
 
         const variantAlternateProductQuery = `
         select id, name, sequence, image_url, sku, price, pvap.productProductId as variant_id from product_templates pt 
@@ -401,6 +401,22 @@ exports.getProductVariants = async (req, res) => {
             const rating = ratings[i];
             const variantId = rating.variant_id;
             const variant = groupedData[variantId];
+            const tempRatings = rating.ratings.split(",");
+            const ratingSummery = {}
+            for (let j = 0; j < tempRatings.length; j++) {
+                const ratingItem = tempRatings[j];
+                if (!ratingSummery[parseInt(ratingItem)]) {
+                    ratingSummery[parseInt(ratingItem)] = 0;
+                }
+                ratingSummery[parseInt(ratingItem)] += 1;
+            }
+            rating.ratings = Object.keys(ratingSummery).map(key => {
+                return {
+                    rating: parseInt(key),
+                    count: ratingSummery[key],
+                }
+            });
+            
             variant.ratings.push(rating);
         }
 
