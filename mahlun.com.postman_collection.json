@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"mazharulsabbir\",\n    \"email\": \"admin@mail.com\",\n    \"password\": \"admin\",\n    \"roles\": [\n        \"user\",\n        \"moderator\"\n    ]\n}",
+							"raw": "{\n    \"username\": \"01611594448\",\n    \"firstName\":\"Md Mazharul\",\n    \"lastName\":\"Islam\",\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin\",\n    \"roles\": [\n        \"user\",\n        \"moderator\",\n        \"admin\"\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\":\"mazharulsabbir\",\n    \"password\":\"admin\"\n}",
+							"raw": "{\n    \"username\":\"01611594448\",\n    \"password\":\"admin11\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -231,7 +231,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Premier's CSE Exam Kit - V3\",\n    \"price\": 450.90,\n    \"active\": true,\n    \"standard_price\": 280.88,\n    \"sku\": \"PCEK0001\",\n    \"sequence\": 100,\n    \"category_id\": 4,\n    \"description\": \"This book is made for CSE students.\",\n    \"image_url\": \"https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=60&w=800&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHx8MA%3D%3D\",\n    \"attributes\": [\n        {\n            \"attr_id\": 4,\n            \"values\": [\n                11,\n                12\n            ]\n        },\n        {\n            \"attr_id\": 5,\n            \"values\": [\n                14,\n                15,\n                16\n            ]\n        },\n        {\n            \"attr_id\": 6,\n            \"values\": [\n                17,\n                18\n            ]\n        }\n    ]\n}",
+							"raw": "{\n    \"name\": \"Premier's CSE Exam Kit - V3\",\n    \"price\": 450.90,\n    \"active\": true,\n    \"standard_price\": 280.88,\n    \"sku\": \"PCEK0001\",\n    \"sequence\": 100,\n    \"category_id\": 1,\n    \"description\": \"This book is made for CSE students.\",\n    \"image_url\": \"https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=60&w=800&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHx8MA%3D%3D\",\n    \"attributes\": [\n        {\n            \"attr_id\": 1,\n            \"values\": [\n                1,2,3\n            ]\n        },\n        {\n            \"attr_id\": 2,\n            \"values\": [\n                5,6\n            ]\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -440,7 +440,7 @@
 							"variable": [
 								{
 									"key": "templateId",
-									"value": "4"
+									"value": "1"
 								}
 							]
 						}
@@ -482,7 +482,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"variant_id\": 1,\n    \"rating\": 4.6,\n    \"note\": \"The product was very good as expected and I got delivery as expected!! Thanks a lot.\"\n}",
+							"raw": "{\n    \"variant_id\": 12,\n    \"rating\": 2,\n    \"note\": \"The product was very good as expected and I got delivery as expected!! Thanks a lot.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -569,7 +569,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"product_qty\": 1,\n    \"product_id\": 3,\n    \"custom_values\":\"{'field_id':1,'value':'This is customer provided value'}\"\n}",
+							"raw": "{\n    \"product_qty\": 10,\n    \"product_id\": 12,\n    \"custom_values\":\"{'field_id':1,'value':'This is customer provided value'}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -651,6 +651,53 @@
 								"api",
 								"order",
 								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Update Order Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/order/update-status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"update-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Update Cart Items",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"product_qty\": 10,\n        \"product_id\": 12\n    },\n    {\n        \"product_qty\": 10,\n        \"product_id\": 3\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/cart/update-items",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"update-items"
 							]
 						}
 					},
@@ -972,6 +1019,150 @@
 								"api",
 								"product",
 								"campaign"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "PUT: User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"Sabbir\",\n    \"lastName\":\"Ahmed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT: Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\":\"admin\",\n    \"newPassword\":\"admin11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/user/change-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET: User Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET: Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/addresses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST: Address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state_id\":1,\n    \"full_name\":\"Sabbir\",\n    \"country\":\"Bangladesh\",\n    \"address\":\"Abc, House 11, Dhaka \",\n    \"mobile\":\"01611594448\",\n    \"email\":\"abc@mail.com\",\n    \"address_type\":\"shipping\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/user/address",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET: States",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/states",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"states"
 							]
 						}
 					},

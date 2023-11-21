@@ -71,22 +71,22 @@ const States = db.states;
 // const ProductVariant = db.productVariant;
 // const ProductVariantAttributeValue = db.productVariantAttributeValue;
 
-// db.sequelize.sync({ force: true }).then(async () => {
-//     console.log('Drop and Resync Db');
-//     await initStates();
-//     await initUserRoles();
-//     await initCarousel();
-//     await initCategories();
-//     await initProductAttributes();
-//     await initProductAttributeValues();
+db.sequelize.sync({ force: true }).then(async () => {
+    console.log('Drop and Resync Db');
+    await initStates();
+    await initUserRoles();
+    await initCarousel();
+    await initCategories();
+    await initProductAttributes();
+    await initProductAttributeValues();
 
 
-// // we are not gonna create product template automatically.
-// //    await initProductTemplates();
-// //    await initProductTmplAttributes();
-// //    await initProductTmplAttrValues();
+// we are not gonna create product template automatically.
+//    await initProductTemplates();
+//    await initProductTmplAttributes();
+//    await initProductTmplAttrValues();
 
-// });
+});
 
 async function initUserRoles() {
     // roles
