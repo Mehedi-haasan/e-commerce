@@ -38,6 +38,7 @@ db.productTemplateAttributeValue = require("./shop.product.template.attribute.va
 db.productVariant = require("./shop.product.product.js")(sequelize, Sequelize);
 db.productVariantAttributeValue = require("./shop.product.variant.attribute.values.js")(sequelize, Sequelize);
 db.productCustomFields = require("./shop.product.custom.fields.js")(sequelize, Sequelize);
+db.productRequest = require("./product.request.model.js")(sequelize, Sequelize);
 
 // alternate products suggestions
 // db.productAlternateProduct = require("./shop.product.alternate.product.js")(sequelize, Sequelize);

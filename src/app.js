@@ -11,7 +11,7 @@ const app = express();
 // express configurations
 app.use(cors(
     {
-        origin: ["http://localhost:3000"],
+        origin: ["http://localhost:3000", "http://localhost:3001", "https://mahlun.com", "http://mahlun.com"],
         methods: ["GET, POST, PUT, PATCH, DELETE"],
         credentials: true
     }
@@ -20,7 +20,7 @@ app.use(cors(
 const rateLimiter = rateLimit({
     windowMs: 1 * 60 * 100,
     max: 1000,
-    message: "Too many request from this Ip. please try again later",
+    message: "Too many request from this Ip. Please try again after some times.",
 })
 
 app.use(express.static('upload'));
@@ -33,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
+require('./routes/product.request.routes')(app);
 require('./routes/product.attribute.routes')(app);
 require('./routes/product.category.routes')(app);
 require('./routes/product.campaign.routes')(app);
@@ -65,27 +66,9 @@ const ProductCategory = db.productCategory;
 const ProductAttribute = db.productAttribute;
 const ProductAttributeValue = db.productAttributeValue;
 const States = db.states;
-// const ProductTemplate = db.productTemplate;
-// const ProductTemplateAttribute = db.productTemplateAttribute;
-// const ProductTemplateAttributeValue = db.productTemplateAttributeValue;
-// const ProductVariant = db.productVariant;
-// const ProductVariantAttributeValue = db.productVariantAttributeValue;
 
-db.sequelize.sync({ force: true }).then(async () => {
+db.sequelize.sync({ force: false }).then(async () => {
     console.log('Drop and Resync Db');
-    await initStates();
-    await initUserRoles();
-    await initCarousel();
-    await initCategories();
-    await initProductAttributes();
-    await initProductAttributeValues();
-
-
-// we are not gonna create product template automatically.
-//    await initProductTemplates();
-//    await initProductTmplAttributes();
-//    await initProductTmplAttrValues();
-
 });
 
 async function initUserRoles() {
@@ -108,13 +91,16 @@ async function initUserRoles() {
 
 
 async function initStates() {
+    const DEFAULT_DELIVERY_CHARGE = 50;
+    const DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA = 150;
+    
     // states
     States.create({
         id: 1,
         name: "Dhaka",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE,
     });
 
     States.create({
@@ -122,7 +108,7 @@ async function initStates() {
         name: "Chittagong",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -130,7 +116,7 @@ async function initStates() {
         name: "Khulna",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -138,7 +124,7 @@ async function initStates() {
         name: "Rajshahi",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -146,7 +132,7 @@ async function initStates() {
         name: "Sylhet",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -154,7 +140,7 @@ async function initStates() {
         name: "Barisal",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -162,7 +148,7 @@ async function initStates() {
         name: "Rangpur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -170,7 +156,7 @@ async function initStates() {
         name: "Mymensingh",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -178,7 +164,7 @@ async function initStates() {
         name: "Dinajpur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -186,7 +172,7 @@ async function initStates() {
         name: "Cox's Bazar",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -194,7 +180,7 @@ async function initStates() {
         name: "Jessore",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -202,7 +188,7 @@ async function initStates() {
         name: "Comilla",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -210,7 +196,7 @@ async function initStates() {
         name: "Bogra",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -218,7 +204,7 @@ async function initStates() {
         name: "Brahmanbaria",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -226,7 +212,7 @@ async function initStates() {
         name: "Jamalpur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -234,7 +220,7 @@ async function initStates() {
         name: "Narayanganj",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -242,7 +228,7 @@ async function initStates() {
         name: "Natore",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -250,7 +236,7 @@ async function initStates() {
         name: "Tangail",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -258,7 +244,7 @@ async function initStates() {
         name: "Faridpur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -266,7 +252,7 @@ async function initStates() {
         name: "Pabna",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -274,7 +260,7 @@ async function initStates() {
         name: "Manikganj",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -282,7 +268,7 @@ async function initStates() {
         name: "Noakhali",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -290,7 +276,7 @@ async function initStates() {
         name: "Gazipur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -298,7 +284,7 @@ async function initStates() {
         name: "Bhola",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -306,7 +292,7 @@ async function initStates() {
         name: "Sherpur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -314,7 +300,7 @@ async function initStates() {
         name: "Chandpur",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 
     States.create({
@@ -322,7 +308,7 @@ async function initStates() {
         name: "Chapainawabganj",
         country: "Bangladesh",
         state_code: "BD",
-        delivery_charge: 50,
+        delivery_charge: DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA,
     });
 }
 
@@ -472,93 +458,6 @@ async function initProductAttributeValues() {
         value: "Google",
     })
 
-}
-
-async function initProductTemplates() {
-
-    // product template
-    ProductTemplate.create({
-        id: 1,
-        active: true,
-        sequence: 10,
-        category_id: 1,
-        name: "Subscription 1",
-        description: "Subscription 1 description",
-        image_url: "/profile/1631713778235.jpg",
-        price: 300,
-        standard_price: 100,
-        sku: "SKU001",
-    })
-
-    ProductTemplate.create({
-        id: 2,
-        active: true,
-        sequence: 10,
-        category_id: 1,
-        name: "T-Shirt 1",
-        description: "T-Shirt 2 description",
-        image_url: "/profile/1631713778235.jpg",
-        price: 310,
-        standard_price: 135.40,
-        sku: "SKU002",
-    })
-
-}
-
-async function initProductTmplAttributes() {
-    // product template attribute
-    // color
-    ProductTemplateAttribute.create({
-        id: 1,
-        active: true,
-        attr_id: 1,
-        tmpl_id: 2,
-    })
-
-    // size
-    ProductTemplateAttribute.create({
-        id: 2,
-        active: true,
-        attr_id: 2,
-        tmpl_id: 2,
-    })
-
-}
-
-async function initProductTmplAttrValues() {
-    // set color property for product template 2
-    // red
-    ProductTemplateAttributeValue.create({
-        id: 1,
-        active: true,
-        product_tmpl_attr_id: 1,
-        value_id: 1,
-    })
-
-    // green
-    ProductTemplateAttributeValue.create({
-        id: 2,
-        active: true,
-        product_tmpl_attr_id: 1,
-        value_id: 2,
-    })
-
-    // set size property for product template 2
-    // S
-    ProductTemplateAttributeValue.create({
-        id: 3,
-        active: true,
-        product_tmpl_attr_id: 2,
-        value_id: 4,
-    })
-
-    // M
-    ProductTemplateAttributeValue.create({
-        id: 4,
-        active: true,
-        product_tmpl_attr_id: 2,
-        value_id: 5,
-    })
 }
 
 module.exports = app;
