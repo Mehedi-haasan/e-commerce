@@ -10,11 +10,11 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/product/requests", [authJwt.verifyToken], controller.getProductRequests);
+    app.get("/api/product/requests", [authJwt.verifyToken, authJwt.isAdmin], controller.getProductRequests);
 
     app.post(
         "/api/product/request",
-        [authJwt.verifyToken, authJwt.isAdmin],
+        [authJwt.verifyToken],
         controller.createProductRequest
     );
 
