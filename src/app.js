@@ -40,6 +40,7 @@ require('./routes/product.campaign.routes')(app);
 require('./routes/carousel.routes')(app);
 require('./routes/product.template.routes')(app);
 require('./routes/sale.order.routes')(app);
+require('./routes/company.profile.route')(app);
 
 
 // client error handling
@@ -65,11 +66,28 @@ const Carousel = db.carousel;
 const ProductCategory = db.productCategory;
 const ProductAttribute = db.productAttribute;
 const ProductAttributeValue = db.productAttributeValue;
+const CompanyProfile = db.companyProfile;
 const States = db.states;
 
 db.sequelize.sync({ force: false }).then(async () => {
-    console.log('Drop and Resync Db');
+    // console.log('Drop and Resync Db');
+    // initUserRoles();
+    // initStates();
+    // initCarousel();
+    // initCategories();
+    // initProductAttributes();
+    // initProductAttributeValues();
+    // initCompanyProfile()
 });
+
+async function initCompanyProfile() {
+    // company profile
+    CompanyProfile.create({
+        id: 1,
+        name: "Mahlun",
+        email: "support@mahlun.com",
+    })
+}
 
 async function initUserRoles() {
     // roles
@@ -93,7 +111,7 @@ async function initUserRoles() {
 async function initStates() {
     const DEFAULT_DELIVERY_CHARGE = 50;
     const DEFAULT_DELIVERY_CHARGE_OUTSIDE_DHAKA = 150;
-    
+
     // states
     States.create({
         id: 1,
@@ -364,7 +382,7 @@ async function initProductAttributes() {
         id: 1,
         active: true,
         name: "Color",
-        display_type: "radio",
+        display_type: "color",
     })
 
     ProductAttribute.create({

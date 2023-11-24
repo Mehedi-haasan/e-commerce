@@ -14,9 +14,15 @@ module.exports = function (app) {
         "/api/product/categories",
         controller.getProductCategories
     );
+
     app.get(
         "/api/category/products",
         controller.getProductByCategories
+    );
+
+    app.get(
+        "/api/category/:categoryId/products",
+        controller.getProductByCategory
     );
 
     app.post(

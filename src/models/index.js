@@ -53,6 +53,7 @@ db.saleOrderLine = require("./order.sale.order.line.js")(sequelize, Sequelize);
 
 // ratings and reviews
 db.customerFeedback = require("./order.customer.feedback.js")(sequelize, Sequelize);
+db.companyProfile = require("./company.model.js")(sequelize, Sequelize);
 
 
 // relations between tables
