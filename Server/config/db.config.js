@@ -2,7 +2,7 @@ const config = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "Ceevit250",
-    DB: "mehedi",
+    DB: "e_commerce",
     dialect: "mysql",
     pool: {
         max: 5,

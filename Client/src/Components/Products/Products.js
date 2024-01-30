@@ -610,13 +610,8 @@ const Practice = () => {
 
   return (
     <div className='bg-[#F6F6F6]'>
-       
-        <div className='w-full md:w-[95%] lg:w-[90%] mx-auto'>
-            <div className='flex'>
-               {/* <h1 className='text-3xl mx-auto font-semibold ml-4 md:ml-0 py-10'>T-Shirt</h1> */}
-            </div>
-        </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mx-auto w-[97%] md:w-[95%] lg:w-[90%] gap-2 mt-3'>
+
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  mx-auto w-[97%] md:w-[95%] lg:w-[90%] gap-2 mt-3'>
         {data.map(({id,discount,image,colour,input,size,heading,stock,price,rules,category}) => (
                 <div key={uuidv4()} className="grid duration-300 mx-auto border shadow p-2 w-full px-4 bg-white rounded-lg">
                   <ProductCard id={id}  discount={discount} image={image} input={input} colour={colour} category={category} rules={rules} size={size} heading={heading} stock={stock} price={price}/>

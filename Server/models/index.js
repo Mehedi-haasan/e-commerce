@@ -30,11 +30,8 @@ db.sequelize = sequelize;
 db.user = require("./user.model")(sequelize, Sequelize);
 db.role = require("./role.model")(sequelize, Sequelize);
 db.productCategory = require("./productCategory.model")(sequelize, Sequelize);
-db.productAttribute = require("./productAttributes.model")(sequelize, Sequelize);
-db.productAttributeValues = require("./productAttributeValues.model")(sequelize, Sequelize);
 db.productTemplete = require("./productTemplete.model")(sequelize, Sequelize);
 db.productVariant = require("./productVariant.model")(sequelize, Sequelize);
-db.productVariantAttribute = require("./productVariantAttribute.model")(sequelize, Sequelize);
 db.productVariantAttributeValue = require("./productVariantAttributeValues.model")(sequelize, Sequelize);
 
 
