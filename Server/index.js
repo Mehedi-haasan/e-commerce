@@ -7,6 +7,8 @@ const port = 8050;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cors())
+
 const db = require("./models");
 require('./routes/user.routes')(app);
 require('./routes/product.template.routes')(app);

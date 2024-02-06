@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux'
 import { loggedOut, loggedIn, nameEmail } from "../Components/Redux/Actions";
 import logo from "../Logo/Mahlun.PNG"
 import CategoryShow from "./CategoryShow";
+import Login from "../Components/Login/Login";
+import Registration from "../Components/Login/Registration";
 
 
 const Header = () => {
@@ -19,9 +21,8 @@ const Header = () => {
   const [toggle, setToggle] = useState(false)
   const [select, setSelect] = useState("")
 
+  const [accessories, setAccessories] = useState(false)
 
-
-  const [errorMessage, setErrorMessage] = useState("")
 
   const isLoggedIn = useSelector(state => state.loggedIn)
   const length = useSelector(state => state.cart)
@@ -73,12 +74,11 @@ const Header = () => {
 
       <div className="sticky bg-white top-0 z-50">
 
-        <div className="grid grid-cols-12 mx-auto sticky top-0 z-50 w-full lg:w-[96%] bg-white">
+        <div className="grid grid-cols-12 relative mx-auto sticky top-0 z-50 w-full lg:w-[96%] bg-white">
 
           {/* first div */}
           <div className="grid col-span-6 lg:col-span-3  lg:my-3 lg:ml-0">
             <NavLink to="/"><img alt="" className="h-12" src={logo} /></NavLink>
-            {/* <NavLink to="/" className="px-1 lg:px-6 py-2 my-auto text-lg lg:text-3xl font-bold"><span className="text-red-500">MahlunShop</span></NavLink> */}
           </div>
 
 
@@ -86,58 +86,10 @@ const Header = () => {
 
           {/* 2nd div */}
           <div className="grid col-span-4 hidden my-auto w-full mx-auto lg:block">
-            <ul className="flex mx-auto gap-2 xl:gap-4 text-sm lg:text-md font-bold">
-              {/* <li>
-                <div className="mx-auto">
-                  <div className="flex"><NavLink onMouseEnter={() => { setOpen(true) }} onMouseLeave={() => { setOpen(false) }} onClick={(e) => { setSelect("Product") }} className={``}>Categories</NavLink><Icon onClick={() => { setOpen(!open) }} icon="ep:arrow-down" className={`transition-transform mt-1 cursor-pointer duration-300 ${open ? "rotate-180" : "rotate-0"}`} /></div>
-                  <div onMouseEnter={() => { setOpen(true) }} onMouseLeave={() => { setOpen(false) }} className={`absolute bg-white shadow-xl text-black pt-4 w-full rounded ${open ? "block" : "hidden"}`}>
-                    <ul className="bg-[#FF002E] w-[150px] text-white">
+            <ul className="flex mx-auto  gap-2 xl:gap-4 text-sm lg:text-md font-bold mt-7">
 
-
-                      <li onMouseEnter={() => { setWatch(true) }} onMouseLeave={() => { setWatch(false) }} className="hover:bg-white hover:text-black pl-3 py-1 flex">
-                        <NavLink to="/watch" onClick={() => { setOpen(!open) }} className="flex py-1 text-sm rounded-lg">Watch</NavLink>
-
-                        <ul onMouseEnter={() => { setWatch(true) }} onMouseLeave={() => { setWatch(false) }} className={`ml-[138px] shadow-xl bg-white absolute w-[350px] pt-2 text-sm ${watch ? "block" : "hidden"}`}>
-                          <li className="pb-1 border-b px-3"><NavLink to="/watch" className="text-black font-semibold">Smart watch</NavLink></li>
-                          <li className="py-1 border-b px-3"><NavLink to="/watch" className="text-black font-semibold">Men's Watch</NavLink></li>
-                          <li className="py-1 border-b px-3"><NavLink to="/watch" className="text-black font-semibold">Women's Watch</NavLink></li>
-                        </ul>
-                      </li>
-
-
-                      <li onMouseEnter={() => { setGame(true) }} onMouseLeave={() => { setGame(false) }} className="hover:bg-white hover:text-black px-3 py-1 flex">
-                        <NavLink to="/game" onClick={() => { setOpen(!open) }} className="flex py-1 text-md rounded-lg">Game</NavLink>
-                        <ul onMouseEnter={() => { setGame(true) }} onMouseLeave={() => { setGame(false) }} className={`ml-[138px] shadow-xl bg-white absolute w-[350px] pt-2 text-sm ${game ? "block" : "hidden"}`}>
-                          <li className="pb-1 border-b px-3"><NavLink to="/game" className="py-1 font-semibold">Pubg</NavLink></li>
-                          <li className="py-1 border-b px-3"><NavLink to="/game" className="py-1 font-semibold">Free Fire</NavLink></li>
-                        </ul>
-                      </li>
-
-
-                      <li onMouseEnter={() => { setLadies(true) }} onMouseLeave={() => { setLadies(false) }} className="hover:bg-white hover:text-black px-3 py-1 flex">
-                        <NavLink to="/ladiscornar" onClick={() => { setOpen(!open) }} className="flex text-sm py-1 rounded-lg">Ladies Corner</NavLink>
-                        <ul onMouseEnter={() => { setLadies(true) }} onMouseLeave={() => { setLadies(false) }} className={`ml-[138px] shadow-xl bg-white absolute w-[350px] pt-2 text-sm ${ladies ? "block" : "hidden"}`}>
-                          <li className="pb-1 border-b px-3"><NavLink className="py-1 font-semibold text-black">Cosmetices</NavLink></li>
-                          <li className="py-1 border-b px-3"><NavLink to="/watch" className="py-1 font-semibold text-black">Watch</NavLink></li>
-                        </ul>
-                      </li>
-
-                      <li onMouseEnter={() => { setSub(true) }} onMouseLeave={() => { setSub(false) }} className="hover:bg-white hover:text-black px-3 py-1 flex">
-                        <NavLink to="/subscription" onClick={() => { setOpen(!open) }} className="flex text-sm py-1 rounded-lg">Subscriptions</NavLink>
-                        <ul onMouseEnter={() => { setSub(true) }} onMouseLeave={() => { setSub(false) }} className={`ml-[138px] shadow-xl bg-white absolute w-[350px] text-sm ${sub ? "block" : "hidden"}`}>
-                          <li className="pb-1 border-b px-3"><NavLink to="/subscription" className="py-1 font-semibold text-black">Netflix</NavLink></li>
-                          <li className="py-1 border-b px-3"><NavLink to="/subscription" className="py-1 font-semibold text-black">Hoichoi</NavLink></li>
-                        </ul>
-                      </li>
-                      <li className="hover:bg-white hover:text-black px-3 py-1"><NavLink to="/trail" onClick={() => { setOpen(!open) }} className="flex py-1 text-sm rounded-lg">Accessories</NavLink></li>
-                    </ul>
-
-                  </div>
-                </div>
-              </li> */}
-
-              <li>
-                <div className="mx-auto flex"><NavLink className="">Categories</NavLink><Icon onClick={() => { setOpen(!open) }} icon="ep:arrow-down" className={`transition-transform mt-1 cursor-pointer duration-300 ${open ? "rotate-180" : "rotate-0"}`} /></div>
+              <li className="">
+                <div className="flex relative"><NavLink onMouseEnter={() => { setAccessories(true) }} onMouseLeave={() => { setAccessories(false) }} to="/Contact" className={` pb-8`}>Accessories</NavLink><Icon onClick={() => { setAccessories(!accessories) }} icon="ep:arrow-down" className={`transition-transform mt-1 cursor-pointer ml-1 duration-300 ${accessories ? "rotate-180" : "rotate-0"}`} /></div>
               </li>
 
               <li>
@@ -190,8 +142,10 @@ const Header = () => {
         </div>
 
 
-
-        {/* <CategoryShow /> */}
+        {/* CategoryShow */}
+        <div onMouseEnter={() => { setAccessories(true) }} onMouseLeave={() => { setAccessories(false) }} className={`absolute w-full shadow-xl text-white rounded ${accessories ? "block" : "hidden"}`}>
+          <CategoryShow />
+        </div>
 
 
 
@@ -294,102 +248,11 @@ const Header = () => {
 
       {/* Small size login */}
       <div className={`static absolute bg-white transition-all font-bold ease-in duration-700 top-[43px] lg:top-[75px] z-50 shadow-xl float-right  w-[60%] lg:w-[400px] h-[100vh] py-3 pr-3 right-0 space-x-2 space-y-2 ${toggle ? "block" : "hidden"}`}>
-        {login ? <div className="bg-white">
-          <div className="pt-3 grid grid-cols-2 border-b border-black pb-4">
-            <div><h1 className="text-black text-lg lg:text-xl pl-5">Sing In</h1></div>
-            <div><button onClick={() => { setToggle(!toggle) }} className="text-right text-sm pt-1 float-right flex"><Icon icon="maki:cross" className="pl-1 pr-1 h-6 w-6" />Cross</button></div>
-          </div>
-          <div>
-            <form onSubmit={handleSubmit} className='mx-auto'>
-              <div className='mt-5 mx-auto w-[90%]'>
-                <h1 className='mt-2 text-sm pt-4'>E-mail Address</h1><br />
-                <input type='text' placeholder='Enter your email'
-                  required name='email' id='email' onChange={e => setValues({ ...values, email: e.target.value })} className='border py-2 px-1 text-sm rounded w-full focus:outline-none' />
-              </div>
-
-              <div className='mt-5 mx-auto w-[90%] '>
-                <h1 className='text-sm pt-4'>Password</h1><br />
-                <input type='password' placeholder='Enter your password' required
-                  name='password' id='password' onChange={e => setValues({ ...values, password: e.target.value })}
-                  className='py-2 px-1 text-sm rounded border w-full focus:outline-none' />
-                <div>
-                  {
-                    errorMessage && <span className='text-red-400  pt-1'>{errorMessage}</span>
-                  }
-                </div>
-              </div>
-              <div></div>
-              <div className='flex pt-6 pb-3'>
-                <button type='submit' className='border block font-semibold bg-[#1B80E0] w-[90%] mx-auto text-white px-8 h-10 rounded'>Log in</button>
-              </div>
-              <div className="grid grid-cols-2 w-[90%] mx-auto">
-                <div><h1 className='text-xs'><input type='checkbox' className='text-xs h-[10px] w-[10px]' /> Remember me</h1></div>
-                <div><button to="/forgetpassword" className='text-red-500 text-right text-xs  float-right'>Forget password</button></div>
-              </div>
-
-              {/* Social media login */}
-              <div className="py-2 grid grid-cols-3 w-[90%] mx-auto">
-                <div className="border-t-2 mt-3 border-black"></div>
-                <div className=""><h1 className="text-center">Or Login With</h1></div>
-                <div className="border-t-2 mt-3 border-black"></div>
-              </div>
-              <div>
-
-              </div>
-            </form>
-
-            <div className='border-b border-black pb-4 pt-2'>
-              <Icon icon="line-md:account" width="70px" className="mx-auto text-gray-100" />
-              <p className='text-center text-sm py-2'>No account Yet?</p>
-              <button onClick={() => { setLogin(false) }} className='block mx-auto border-b text-lg border-red-500'>Create an Account</button>
-            </div>
-          </div>
-        </div>
+        {login ? <Login isLoggedIn={()=>{setLogin(!login)}}/>
           :
 
           // Registration
-          <div className="mx-auto w-[90%]">
-            <form>
-              <div className='mt-5'>
-                <h1 className='text-sm font-semibold pt-4'>Name</h1>
-                <input type='text' placeholder='Enter your name'
-                  required name='name' id='name' onChange={e => setValues({ ...values, rname: e.target.value })}
-                  className='py-2 px-2 text-sm rounded border w-full focus:outline-none' />
-              </div>
-
-              <div className='mt-5'>
-                <h1 className='mt-2 text-sm font-semibold pt-4'>E-mail Address</h1>
-                <input type='text' placeholder='Enter your email'
-                  required name='email' id='email' onChange={e => setValues({ ...values, remail: e.target.value })} className='py-2 px-2 rounded border text-sm w-full focus:outline-none' />
-                {
-                  errorMessage && <span className='text-red-400 py-1'>{errorMessage}</span>
-                }
-              </div>
-
-              <div className='mt-5'>
-                <h1 className='mt-2 text-xl font-semibold pt-4'>Phone</h1>
-                <input type='phone' placeholder='Phone'
-                  required name='phone' id='phone' onChange={e => setValues({ ...values, rphone: e.target.value })} className='py-2 px-2 rounded border w-full focus:outline-none' />
-              </div>
-
-              <div className='mt-5'>
-                <h1 className='text-xl font-semibold pt-4'>Password</h1>
-                <input type='password' placeholder='Enter your password' required
-                  name='password' id='password' onChange={e => setValues({ ...values, rpassword: e.target.value })}
-                  className='py-2 px-2 rounded border w-full focus:outline-none' />
-
-              </div>
-
-              <p className='pt-3 text-sm'>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
-
-
-              <div className='flex my-6 lg:pb-10'>
-                <button type='submit' onClick={handleRegister} className='border block font-semibold bg-[#1B80E0] text-white  mx-auto px-6 h-10 rounded w-full'>Register</button>
-              </div>
-
-              <button onClick={() => { setLogin(true) }} className='block mx-auto border-b text-lg border-red-500'>Login</button>
-            </form>
-          </div>
+          <Registration isLoggedIn={()=>{setLogin(!login)}}/>
         }
       </div>
 

@@ -32,7 +32,7 @@ db.role = require("./role.model")(sequelize, Sequelize);
 db.productCategory = require("./productCategory.model")(sequelize, Sequelize);
 db.productTemplete = require("./productTemplete.model")(sequelize, Sequelize);
 db.productVariant = require("./productVariant.model")(sequelize, Sequelize);
-db.productVariantAttributeValue = require("./productVariantAttributeValues.model")(sequelize, Sequelize);
+db.ProductAttribute = require("./ProductAttribute.model")(sequelize, Sequelize);
 
 
 
@@ -47,10 +47,10 @@ db.productVariant.belongsTo(db.productTemplete,{
 })
 
 
-db.productVariant.hasMany(db.productVariantAttributeValue,{
+db.productVariant.hasMany(db.ProductAttribute,{
   foreignKey:"variant_id"
 })
-db.productVariantAttributeValue.belongsTo(db.productVariant,{
+db.ProductAttribute.belongsTo(db.productVariant,{
   foreignKey:"variant_id"
 })
 

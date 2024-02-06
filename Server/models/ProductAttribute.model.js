@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const ProductVariantAttributeValue = sequelize.define("product_variant_attribute_value", {
+    const ProductVariantAttributeValue = sequelize.define("attribute", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
         },
         variant_id: {
+            type: Sequelize.INTEGER,
+        },
+        templete_id: {
             type: Sequelize.INTEGER,
         },
         name: {

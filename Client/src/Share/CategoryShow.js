@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const CategoryShow = () => {
-    const [state, setState]=useState({
-        accessories:false,
-        watch:false,
-        subscription:false,
-        tshirt:false
-    })
+
+    const [watch, setWatch] = useState(false)
+    const [game, setGame] = useState(false)
+    const [ladies, setLadies] = useState(false)
+
     const category = [
         {
             id: 1,
@@ -26,57 +25,58 @@ const CategoryShow = () => {
             name: "Subscription",
         },
     ];
+    const Game = [
+        {
+            id: 1,
+            name: "Pubg",
+        },
+        {
+            id: 2,
+            name: "Free Fire",
+        },
+        {
+            id: 3,
+            name: "T-shirt",
+        },
+        {
+            id: 4,
+            name: "Subscription",
+        },
+    ];
 
     return (
-        <div className="">
-            <div className="grid grid-cols-12 absolute w-[90%] ml-[5%] shadow">
-                <div className="grid col-span-4 bg-[#FF002E] rounded-l">
-                    <div>
-                    <NavLink onMouseEnter={(e)=>{setState({...state, accessories:true})}} onMouseLeave={(e)=>{setState({...state, accessories:false})}} className="text-white pl-5 py-1 hover:bg-white hover:text-black block font-semibold">Accessories</NavLink>
-                    <NavLink onMouseEnter={(e)=>{setState({...state, watch:true})}} onMouseLeave={(e)=>{setState({...state, watch:false})}} className="text-white pl-5 py-1 hover:bg-white hover:text-black block font-semibold">Smart Watch</NavLink>
-                    <NavLink onMouseEnter={(e)=>{setState({...state, subscription:true})}} onMouseLeave={(e)=>{setState({...state, subscription:false})}} className="text-white pl-5 py-1 hover:bg-white hover:text-black block font-semibold">Subscription</NavLink>
-                    <NavLink onMouseEnter={(e)=>{setState({...state, tshirt:true})}} onMouseLeave={(e)=>{setState({...state, tshirt:false})}} className="text-white pl-5 py-1 hover:bg-white hover:text-black block font-semibold">T-shirt</NavLink>
+        <div className="grid grid-cols-12 z-50 w-[90%] mx-auto">
+
+            {/* CategoryShow */}
+            <div className="grid col-span-3 bg-[#FF0000] rounded-l">
+                <ul className="w-full font-bold">
+                    <li className="hover:bg-white hover:text-black pl-5 py-1"><NavLink to="/help" className="flex py-1 text-sm rounded-lg">Accessories</NavLink></li>
+                    <li onMouseEnter={() => { setWatch(true) }} onMouseLeave={() => { setWatch(false) }} className="hover:bg-white hover:text-black pl-5 py-1"><NavLink to="/liveChat" className="flex py-1 text-sm rounded-lg">Watch</NavLink></li>
+                    <li className="hover:bg-white hover:text-black pl-5 py-1"><NavLink to="/renewSubscription" className="flex text-sm py-1 rounded-lg">Subscription</NavLink></li>
+                    <li onMouseEnter={() => { setGame(true) }} onMouseLeave={() => { setGame(false) }} className="hover:bg-white hover:text-black pl-5 py-1"><NavLink to="/productrequest" className="flex text-sm py-1 rounded-lg">Game</NavLink> </li>
+                    <li className="hover:bg-white hover:text-black pl-5 py-1"><NavLink to="/productrequest" className="flex text-sm py-1 rounded-lg">Gift Card</NavLink> </li>
+                </ul>
+            </div>
+
+            <div className="grid col-span-9 rounded-r bg-white text-sm">
+
+                {/* Watch */}
+                <div onMouseEnter={() => { setWatch(true) }} onMouseLeave={() => { setWatch(false) }} className={`h-full ${watch ? "":"hidden"}`}>
+                    <div className={`grid grid-cols-2`}>
+                        {category.map((data) => (
+                            <div><NavLink className={`text-black pl-4 py-1 font-semibold`}>{data.name}</NavLink></div>
+                        ))}
                     </div>
                 </div>
 
-                <div className="grid col-span-8 bg-white rounded-r">
 
-                    <div className={`grid grid-cols-2 ${state.watch ? "":"hidden"}`}>
-                        {category.map((data) => {
-                            return (
-                                <div>
-                                    <NavLink className="block font-semibold">{data.name}</NavLink>
-                                </div>
-                            );
-                        })}
+                 {/* Watch */}
+                 <div onMouseEnter={() => { setGame(true) }} onMouseLeave={() => { setGame(false) }} className={`h-full ${game ? "":"hidden"}`}>
+                    <div className={`grid grid-cols-2`}>
+                        {Game.map((data) => (
+                            <div><NavLink className={`text-black pl-4 py-1 font-semibold`}>{data.name}</NavLink></div>
+                        ))}
                     </div>
-
-
-                    <div className={`grid grid-cols-2 ${state.subscription ? "":"hidden"}`}>
-                        {category.map((data) => {
-                            return (
-                                <div>
-                                    <NavLink className="block font-semibold">{data.name}</NavLink>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-
-                    <div className={`grid grid-cols-2 ${state.accessories ? "":"hidden"}`}>
-                        {category.map((data) => {
-                            return (
-                                <div>
-                                    <NavLink className="block font-semibold">{data.name}</NavLink>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-
-
-      
-       
                 </div>
             </div>
         </div>

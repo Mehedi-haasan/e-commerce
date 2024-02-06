@@ -1,7 +1,7 @@
 const config = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "Ceevit250",
+    PASSWORD: "ceevit250",
     DB: "e_commerce",
     dialect: "mysql",
     pool: {

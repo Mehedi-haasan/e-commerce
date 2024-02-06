@@ -15,10 +15,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         price: {
-            type: Sequelize.DECIMAL(10, 4)
+            type: Sequelize.INTEGER
         },
         standard_price: {
-            type: Sequelize.DECIMAL(10, 4)
+            type: Sequelize.INTEGER
         },
         sku: {
             type: Sequelize.STRING

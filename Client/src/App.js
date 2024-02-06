@@ -47,20 +47,6 @@ import AllProduct from "./Components/Products/AllProduct";
 
 
 function App() {
-// const [auth, setAuth]=useState(false)
-// const [isAdmin, setIsAdmin]=useState(true)
-
-//   axios.defaults.withCredentials =true
-//   useEffect(()=>{
-//     axios.get('http://localhost:5500')
-//     .then(res =>{
-//      if(res.data.Status === "Success"){
-//        setAuth(true);
-//      }else{
-//       setAuth(false);
-//      }
-//     })
-//  },[])
   return (
  
       <BrowserRouter>
@@ -85,7 +71,7 @@ function App() {
           <Route path="/giftcard" element={<GiftCard/>}/>
           <Route path="/forgetpassword" element={<ForgetPassword/> }/>
           <Route path="/gamedetails" element={ <GameDetails/>}/>
-          <Route path="/productdetails" element={ <ProductDetails/>}/>
+          <Route path="/product/details/:id" element={ <ProductDetails/>}/>
           <Route path="/watch" element={ <Watch/> }/>
           <Route path="/watchdetails" element={ <WatchDetails/>}/>
           <Route path="/offer" element={<Offer/> }/>

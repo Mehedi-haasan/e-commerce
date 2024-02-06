@@ -12,8 +12,7 @@ module.exports = function (app) {
 
     app.post("/api/create/product", controller.createProduct);
     app.get("/api/get/product", controller.getProductVariant);
+    app.get("/api/get/product/templete", controller.getProductTemplete);
+    app.get("/api/get/product/variant/:id", controller.getProductVariant);
 
-    // app.get("/api/auth/signin", (req, res)=>{
-    //     res.send("Hello World")
-    // });
 };
